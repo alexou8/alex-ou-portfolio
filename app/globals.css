@@ -25,6 +25,49 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* ===== Motion helpers (subtle, modern) ===== */
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Initial hidden state for scroll-reveal elements */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 650ms cubic-bezier(.2,.8,.2,1), transform 650ms cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform;
+}
+
+/* Becomes visible when intersecting */
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: slight stagger delay via inline style or data-delay */
+.reveal[data-delay="1"] { transition-delay: 120ms; }
+.reveal[data-delay="2"] { transition-delay: 240ms; }
+.reveal[data-delay="3"] { transition-delay: 360ms; }
+
+/* Load-in animation for hero */
+@keyframes riseFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-in {
+  animation: riseFade 750ms cubic-bezier(.2,.8,.2,1) both;
+}
+.hero-in[data-delay="1"] { animation-delay: 120ms; }
+.hero-in[data-delay="2"] { animation-delay: 240ms; }
+.hero-in[data-delay="3"] { animation-delay: 360ms; }
+
+
 /* app/globals.css */
 html { scroll-behavior: smooth; }
 body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
