@@ -166,7 +166,7 @@ export default function Home() {
   useScrollReveal();
 
   return (
-    <main className="min-h-screen bg-[#070A0F] text-white">
+    <main className="min-h-screen bg-white text-slate-900">
       {/* =========================
           NAV
           EDIT HERE: Resume link if you add one (e.g., /resume.pdf in /public)
