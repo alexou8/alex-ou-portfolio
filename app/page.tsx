@@ -8,18 +8,18 @@
 const LINKS = {
   // EDIT HERE
   github: "https://github.com/alexou8",
-  linkedin: "https://www.linkedin.com/in/alexou",
-  email: "alex.ou@wlu.ca",
+  linkedin: "https://www.linkedin.com/in/alexou8",
+  email: "oualex8@gmail.com",
 };
 
 const PROFILE = {
   // EDIT HERE
   name: "Alex Ou",
   location: "Richmond Hill, ON",
-  tagline: "Backend • Data • Automation",
-  headline: "Building reliable systems that turn raw data into real decisions.",
+  tagline: "Software • Data • AI • Systems",
+  headline: "Building reliable software systems that turn data into decisions.",
   summary:
-    "Senior Computer Science student focused on backend development, data pipelines, and automation. I’ve supported production IoT smart-lighting software operating across 1,000+ devices and built FastAPI + PostgreSQL systems for analytics and reporting.",
+    "Fourth-year Computer Science student with experience across software engineering, data workflows, and applied AI. I’ve supported production IoT systems operating across 1,000+ devices, built backend services with FastAPI and PostgreSQL, and developed data pipelines and ML-driven insights to support real-world decision-making.",
 };
 
 const EXPERIENCE = [
@@ -30,10 +30,10 @@ const EXPERIENCE = [
     time: "Summer 2024",
     location: "Guangdong, China",
     bullets: [
-      "Contributed to development and testing of IoT smart-lighting software using embedded sensor modules and NB-IoT communication to manage 1,000+ devices.",
-      "Automated device setup using configuration templates (grouping, brightness profiles, timing rules), reducing manual technician intervention by ~25%.",
-      "Built Python monitoring/diagnostic scripts to analyze telemetry and logs from 1,000+ devices to improve reliability and issue detection.",
-      "Implemented automated device-health checks (uptime, responsiveness, power usage) to reduce downtime and maintenance requests.",
+      "Contributed to development and testing of IoT smart-lighting software using embedded sensor modules and NB-IoT communication to manage 1,000+ devices",
+      "Automated device setup using configuration templates (grouping, brightness profiles, timing rules), reducing manual technician intervention by ~25%",
+      "Built Python monitoring/diagnostic scripts to analyze telemetry and logs from 1,000+ devices to improve reliability and issue detection",
+      "Implemented automated device-health checks (uptime, responsiveness, power usage) to reduce downtime and maintenance requests",
     ],
   },
 ];
