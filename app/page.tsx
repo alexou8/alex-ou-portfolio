@@ -1,11 +1,16 @@
 "use client";
 
 // ============================================================
-// Light Theme Portfolio (Wealthsimple-inspired)
-// Next.js App Router + Tailwind + Subtle Animations
+// HeyTea-Inspired Mobile App Portfolio
+// Next.js App Router + Tailwind
+// - App shell header + optional bottom tabs
+// - Stacked glass cards
+// - Press feedback + micro interactions
+// - Swipeable project carousel (scroll-snap)
+// - Floating gradient blobs (CSS keyframes)
 // ============================================================
 
-import { useEffect } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /* =========================
    Types
@@ -24,8 +29,14 @@ type Project = {
   links?: ProjectLink[];
 };
 
+type NavItem = {
+  id: string;
+  label: string;
+  emoji: string;
+};
+
 /* =========================
-   Content
+   Content (kept from your current file)
 ========================= */
 const LINKS = {
   github: "https://github.com/alexou8",
@@ -98,29 +109,46 @@ const PROJECTS: Project[] = [
   },
 ];
 
-const SKILLS = {
-  "Languages": ["Python", "SQL", "Java", "JavaScript", "C", "TypeScript"],
+const SKILLS: Record<string, string[]> = {
+  Languages: ["Python", "SQL", "Java", "JavaScript", "C", "TypeScript"],
   "Backend & Data": ["FastAPI", "PostgreSQL", "REST APIs", "Data Pipelines"],
   "AI / ML": ["Scikit-learn", "Applied ML", "Data Analysis"],
-  "Tools": ["Git", "Linux", "Postman", "Power Automate"],
+  Tools: ["Git", "Linux", "Postman", "Power Automate"],
 };
 
 /* =========================
-   Animation Hook
+   Small helpers
+========================= */
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
+
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+/* =========================
+   Reveal hook (subtle)
 ========================= */
 function useScrollReveal() {
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>(".reveal");
+    const elements = document.querySelectorAll<HTMLElement>("[data-reveal='true']");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            e.target.classList.add("show");
+            e.target.classList.add("reveal-show");
             observer.unobserve(e.target);
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.14 }
     );
 
     elements.forEach((el) => observer.observe(el));
@@ -129,11 +157,48 @@ function useScrollReveal() {
 }
 
 /* =========================
-   UI Helpers
+   Active section hook (for bottom tabs)
+========================= */
+function useActiveSection(sectionIds: string[]) {
+  const [active, setActive] = useState<string>(sectionIds[0] ?? "home");
+
+  useEffect(() => {
+    const els = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (els.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
+
+        if (visible?.target?.id) {
+          setActive(visible.target.id);
+        }
+      },
+      {
+        threshold: [0.18, 0.25, 0.35],
+        rootMargin: "-20% 0px -55% 0px",
+      }
+    );
+
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [sectionIds.join("|")]);
+
+  return active;
+}
+
+/* =========================
+   UI Components
 ========================= */
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-black/10 bg-black/5 px-3 py-1 text-xs text-slate-700">
+    <span className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white/70 px-3 py-1 text-xs text-slate-700 shadow-[0_1px_0_rgba(0,0,0,0.02)] backdrop-blur transition-transform active:scale-[0.98]">
+      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/80" />
       {children}
     </span>
   );
@@ -150,17 +215,173 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-xs font-semibold tracking-[0.22em] text-emerald-600">
+      <p className="text-[11px] font-semibold tracking-[0.26em] text-emerald-700/80">
         {eyebrow}
       </p>
       <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900">
         {title}
       </h2>
-      {desc && (
+      {desc ? (
         <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
           {desc}
         </p>
-      )}
+      ) : null}
+    </div>
+  );
+}
+
+function GlassCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={[
+        "rounded-[28px] border border-black/5 bg-white/75 backdrop-blur",
+        "shadow-[0_10px_30px_rgba(15,23,42,0.06)]",
+        "transition-transform duration-200 active:scale-[0.985]",
+        className,
+      ].join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
+
+function PrimaryButton({
+  href,
+  children,
+  ariaLabel,
+}: {
+  href: string;
+  children: React.ReactNode;
+  ariaLabel?: string;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={ariaLabel}
+      className={[
+        "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold",
+        "bg-slate-900 text-white",
+        "shadow-[0_10px_18px_rgba(15,23,42,0.22)]",
+        "transition-transform duration-200 active:scale-[0.97]",
+      ].join(" ")}
+    >
+      {children}
+      <span className="opacity-80">→</span>
+    </a>
+  );
+}
+
+function SecondaryButton({
+  href,
+  children,
+  ariaLabel,
+}: {
+  href: string;
+  children: React.ReactNode;
+  ariaLabel?: string;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={ariaLabel}
+      className={[
+        "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold",
+        "border border-black/10 bg-white/70 text-slate-900 backdrop-blur",
+        "shadow-[0_8px_16px_rgba(15,23,42,0.06)]",
+        "transition-transform duration-200 active:scale-[0.97]",
+      ].join(" ")}
+    >
+      {children}
+      <span className="opacity-60">↗</span>
+    </a>
+  );
+}
+
+function StatCard({ label, value }: { label: string; value: string }) {
+  return (
+    <GlassCard className="p-4">
+      <div className="text-xs text-slate-600">{label}</div>
+      <div className="mt-1 text-lg font-semibold text-slate-900">{value}</div>
+    </GlassCard>
+  );
+}
+
+function SkillChip({ text }: { text: string }) {
+  return (
+    <span
+      className={[
+        "inline-flex items-center rounded-full px-3 py-1 text-xs",
+        "bg-black/5 text-slate-700 border border-black/5",
+        "transition-transform duration-200 active:scale-[0.97]",
+      ].join(" ")}
+    >
+      {text}
+    </span>
+  );
+}
+
+function ProjectCard({ p }: { p: Project }) {
+  return (
+    <div
+      className={[
+        "snap-center min-w-[86%] sm:min-w-[460px]",
+        "rounded-[28px] border border-black/5 bg-white/80 backdrop-blur",
+        "shadow-[0_14px_34px_rgba(15,23,42,0.08)]",
+        "p-6",
+        "transition-transform duration-200 active:scale-[0.985]",
+      ].join(" ")}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-semibold text-slate-900">{p.name}</h3>
+          <p className="mt-1 text-sm text-slate-600">{p.subtitle}</p>
+        </div>
+        <span className="rounded-full bg-emerald-600/10 px-3 py-1 text-xs font-semibold text-emerald-800">
+          Featured
+        </span>
+      </div>
+
+      <p className="mt-4 text-sm text-slate-700 leading-relaxed">{p.impact}</p>
+
+      <ul className="mt-4 space-y-2 text-sm text-slate-600">
+        {p.bullets.slice(0, 3).map((b) => (
+          <li key={b} className="flex gap-2">
+            <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-slate-400/80" />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {p.stack.map((s) => (
+          <span
+            key={s}
+            className="rounded-full border border-black/5 bg-black/5 px-3 py-1 text-xs text-slate-700"
+          >
+            {s}
+          </span>
+        ))}
+      </div>
+
+      {p.links && p.links.length > 0 ? (
+        <div className="mt-5 flex flex-wrap gap-2">
+          {p.links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+            >
+              {l.label} ↗
+            </a>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -171,126 +392,123 @@ function SectionTitle({
 export default function Home() {
   useScrollReveal();
 
-  return (
-    <main className="min-h-screen bg-white text-slate-900">
-      {/* NAV */}
-      <header className="sticky top-0 z-50 border-b border-black/5 bg-white/70 backdrop-blur">
-        <nav className="mx-auto max-w-6xl px-6 py-4 flex justify-between items-center">
-          <span className="font-semibold">{PROFILE.name}</span>
-          <div className="hidden sm:flex gap-6 text-sm text-slate-600">
-            <a href="#work" className="hover:text-slate-900">Work</a>
-            <a href="#projects" className="hover:text-slate-900">Projects</a>
-            <a href="#skills" className="hover:text-slate-900">Skills</a>
-            <a href="#contact" className="hover:text-slate-900">Contact</a>
-          </div>
-        </nav>
-      </header>
-
-      {/* HERO */}
-      <section className="mx-auto max-w-6xl px-6 pt-20 pb-16">
-        <div className="max-w-3xl">
-          <div className="hero-in flex flex-wrap gap-2" data-delay="1">
-            <Pill>{PROFILE.tagline}</Pill>
-            <Pill>{PROFILE.location}</Pill>
-            <Pill>Wilfrid Laurier University</Pill>
-          </div>
-
-          <h1 className="hero-in mt-6 text-4xl sm:text-5xl font-semibold tracking-tight" data-delay="2">
-            {PROFILE.headline}
-          </h1>
-
-          <p className="hero-in mt-6 text-base sm:text-lg text-slate-600 leading-relaxed" data-delay="3">
-            {PROFILE.summary}
-          </p>
-
-          <div className="hero-in mt-8 flex gap-3" data-delay="3">
-            <a href={LINKS.github} className="rounded-full bg-slate-900 text-white px-6 py-3 text-sm font-semibold">
-              GitHub
-            </a>
-            <a href={LINKS.linkedin} className="rounded-full border border-black/10 px-6 py-3 text-sm font-semibold">
-              LinkedIn
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* EXPERIENCE */}
-      <section id="work" className="mx-auto max-w-6xl px-6 py-20 reveal">
-        <SectionTitle
-          eyebrow="EXPERIENCE"
-          title="Building reliable systems in real environments."
-        />
-
-        <div className="mt-10 space-y-4">
-          {EXPERIENCE.map((x) => (
-            <div key={x.role} className="rounded-3xl border border-black/10 p-6 shadow-sm hover:shadow-md transition">
-              <h3 className="font-semibold">{x.role}</h3>
-              <p className="text-sm text-slate-600 mt-1">
-                {x.company} • {x.time}
-              </p>
-              <ul className="mt-4 list-disc pl-5 text-sm text-slate-600 space-y-2">
-                {x.bullets.map((b) => <li key={b}>{b}</li>)}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PROJECTS */}
-      <section id="projects" className="bg-slate-50 border-y border-black/5">
-        <div className="mx-auto max-w-6xl px-6 py-20 reveal">
-          <SectionTitle
-            eyebrow="PROJECTS"
-            title="Selected technical projects."
-          />
-
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {PROJECTS.map((p) => (
-              <div key={p.name} className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm hover:shadow-md transition">
-                <h3 className="font-semibold">{p.name}</h3>
-                <p className="text-sm text-slate-600 mt-1">{p.subtitle}</p>
-                <p className="mt-3 text-sm text-slate-600">{p.impact}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.stack.map((s) => (
-                    <span key={s} className="text-xs bg-black/5 px-3 py-1 rounded-full">{s}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SKILLS */}
-      <section id="skills" className="mx-auto max-w-6xl px-6 py-20 reveal">
-        <SectionTitle eyebrow="SKILLS" title="Core technical skills." />
-
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {Object.entries(SKILLS).map(([k, v]) => (
-            <div key={k} className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
-              <h4 className="font-semibold text-sm">{k}</h4>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {v.map((s) => (
-                  <span key={s} className="text-xs bg-black/5 px-3 py-1 rounded-full">{s}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="border-t border-black/5">
-        <div className="mx-auto max-w-6xl px-6 py-20 reveal">
-          <SectionTitle eyebrow="CONTACT" title="Let’s connect." />
-          <a
-            href={`mailto:${LINKS.email}`}
-            className="mt-6 inline-block rounded-full bg-slate-900 text-white px-6 py-3 text-sm font-semibold"
-          >
-            {LINKS.email}
-          </a>
-        </div>
-      </section>
-    </main>
+  const NAV: NavItem[] = useMemo(
+    () => [
+      { id: "home", label: "Home", emoji: "🏠" },
+      { id: "work", label: "Work", emoji: "🧩" },
+      { id: "projects", label: "Projects", emoji: "🧋" },
+      { id: "skills", label: "Skills", emoji: "✨" },
+      { id: "contact", label: "Contact", emoji: "✉️" },
+    ],
+    []
   );
-}
+
+  const active = useActiveSection(NAV.map((n) => n.id));
+
+  // For subtle parallax on blobs (optional, very light)
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const tiltRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      // Desktop only, keep very subtle
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      const nx = clamp(x, -1, 1);
+      const ny = clamp(y, -1, 1);
+
+      if (tiltRef.current) {
+        window.cancelAnimationFrame(tiltRef.current);
+      }
+      tiltRef.current = window.requestAnimationFrame(() => {
+        setTilt({ x: nx, y: ny });
+      });
+    };
+
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#FAF7F2] text-slate-900">
+      {/* Global keyframes */}
+      <style jsx global>{`
+        .reveal-init {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        .reveal-show {
+          opacity: 1;
+          transform: translateY(0px);
+          transition: opacity 520ms ease, transform 520ms ease;
+        }
+
+        @keyframes blobFloatA {
+          0% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(12px, -18px, 0) scale(1.04);
+          }
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+
+        @keyframes blobFloatB {
+          0% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(-14px, 14px, 0) scale(1.05);
+          }
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+
+        @keyframes sheen {
+          0% {
+            transform: translateX(-60%);
+            opacity: 0.0;
+          }
+          40% {
+            opacity: 0.08;
+          }
+          100% {
+            transform: translateX(60%);
+            opacity: 0.0;
+          }
+        }
+
+        /* nicer scroll on iOS */
+        .scroll-smooth-ios {
+          -webkit-overflow-scrolling: touch;
+        }
+      `}</style>
+
+      {/* Background blobs */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div
+          className="absolute -top-20 -left-20 h-72 w-72 rounded-full blur-3xl opacity-40"
+          style={{
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(16,185,129,0.55), rgba(251,191,36,0.35), rgba(244,114,182,0.18))",
+            animation: "blobFloatA 14s ease-in-out infinite",
+            transform: `translate3d(${tilt.x * 8}px, ${tilt.y * 6}px, 0)`,
+          }}
+        />
+        <div
+          className="absolute top-32 -right-24 h-80 w-80 rounded-full blur-3xl opacity-35"
+          style={{
+            background:
+              "radial-gradient(circle at 35% 35%, rgba(244,114,182,0.35), rgba(34,197,94,0.22), rgba(59,130,246,0.12))",
+            animation: "blobFloatB 16s ease-in-out infinite",
+            transform: `translate3d(${tilt.x * -10}px, ${tilt.y * 8}px, 0)`,
+          }}
+        />
+        <div
+          className="absolute bottom-[-140px] left-[25%] h-[420px] w-[420px] rounded-full blur-3xl opacity-25"
+          style={{
+            background:
+              "radial-gradient(circle at 40% 40%, rgba(251,191,36,0.42), rgba(16,
