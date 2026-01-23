@@ -1,13 +1,14 @@
 "use client";
 
 // ============================================================
-// HeyTea-Inspired Mobile App Portfolio
+// HeyTea-Inspired Mobile App Portfolio (Vercel + TS-safe)
 // Next.js App Router + Tailwind
-// - App shell header + optional bottom tabs
+// - App shell header + mobile bottom tabs
 // - Stacked glass cards
 // - Press feedback + micro interactions
 // - Swipeable project carousel (scroll-snap)
 // - Floating gradient blobs (CSS keyframes)
+// NOTE: Uses plain <style> (no styled-jsx props) to avoid TS error.
 // ============================================================
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -36,7 +37,7 @@ type NavItem = {
 };
 
 /* =========================
-   Content (kept from your current file)
+   Content
 ========================= */
 const LINKS = {
   github: "https://github.com/alexou8",
@@ -117,7 +118,7 @@ const SKILLS: Record<string, string[]> = {
 };
 
 /* =========================
-   Small helpers
+   Helpers
 ========================= */
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -126,11 +127,7 @@ function clamp(n: number, min: number, max: number) {
 function scrollToId(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
-
-  el.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 /* =========================
@@ -157,7 +154,7 @@ function useScrollReveal() {
 }
 
 /* =========================
-   Active section hook (for bottom tabs)
+   Active section hook (bottom tabs)
 ========================= */
 function useActiveSection(sectionIds: string[]) {
   const [active, setActive] = useState<string>(sectionIds[0] ?? "home");
@@ -314,13 +311,7 @@ function StatCard({ label, value }: { label: string; value: string }) {
 
 function SkillChip({ text }: { text: string }) {
   return (
-    <span
-      className={[
-        "inline-flex items-center rounded-full px-3 py-1 text-xs",
-        "bg-black/5 text-slate-700 border border-black/5",
-        "transition-transform duration-200 active:scale-[0.97]",
-      ].join(" ")}
-    >
+    <span className="inline-flex items-center rounded-full px-3 py-1 text-xs bg-black/5 text-slate-700 border border-black/5 transition-transform duration-200 active:scale-[0.97]">
       {text}
     </span>
   );
@@ -405,24 +396,18 @@ export default function Home() {
 
   const active = useActiveSection(NAV.map((n) => n.id));
 
-  // For subtle parallax on blobs (optional, very light)
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const tiltRef = useRef<number | null>(null);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
-      // Desktop only, keep very subtle
       const x = (e.clientX / window.innerWidth - 0.5) * 2;
       const y = (e.clientY / window.innerHeight - 0.5) * 2;
       const nx = clamp(x, -1, 1);
       const ny = clamp(y, -1, 1);
 
-      if (tiltRef.current) {
-        window.cancelAnimationFrame(tiltRef.current);
-      }
-      tiltRef.current = window.requestAnimationFrame(() => {
-        setTilt({ x: nx, y: ny });
-      });
+      if (tiltRef.current) window.cancelAnimationFrame(tiltRef.current);
+      tiltRef.current = window.requestAnimationFrame(() => setTilt({ x: nx, y: ny }));
     };
 
     window.addEventListener("mousemove", onMove);
@@ -431,8 +416,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-slate-900">
-      {/* Global keyframes */}
-      <style jsx global>{`
+      {/* Global keyframes (plain <style> avoids TS styled-jsx typing issue) */}
+      <style>{`
         .reveal-init {
           opacity: 0;
           transform: translateY(10px);
@@ -444,47 +429,24 @@ export default function Home() {
         }
 
         @keyframes blobFloatA {
-          0% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-          50% {
-            transform: translate3d(12px, -18px, 0) scale(1.04);
-          }
-          100% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
+          0% { transform: translate3d(0, 0, 0) scale(1); }
+          50% { transform: translate3d(12px, -18px, 0) scale(1.04); }
+          100% { transform: translate3d(0, 0, 0) scale(1); }
         }
 
         @keyframes blobFloatB {
-          0% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
-          50% {
-            transform: translate3d(-14px, 14px, 0) scale(1.05);
-          }
-          100% {
-            transform: translate3d(0, 0, 0) scale(1);
-          }
+          0% { transform: translate3d(0, 0, 0) scale(1); }
+          50% { transform: translate3d(-14px, 14px, 0) scale(1.05); }
+          100% { transform: translate3d(0, 0, 0) scale(1); }
         }
 
         @keyframes sheen {
-          0% {
-            transform: translateX(-60%);
-            opacity: 0.0;
-          }
-          40% {
-            opacity: 0.08;
-          }
-          100% {
-            transform: translateX(60%);
-            opacity: 0.0;
-          }
+          0% { transform: translateX(-60%); opacity: 0; }
+          40% { opacity: 0.08; }
+          100% { transform: translateX(60%); opacity: 0; }
         }
 
-        /* nicer scroll on iOS */
-        .scroll-smooth-ios {
-          -webkit-overflow-scrolling: touch;
-        }
+        .scroll-smooth-ios { -webkit-overflow-scrolling: touch; }
       `}</style>
 
       {/* Background blobs */}
@@ -492,8 +454,7 @@ export default function Home() {
         <div
           className="absolute -top-20 -left-20 h-72 w-72 rounded-full blur-3xl opacity-40"
           style={{
-            background:
-              "radial-gradient(circle at 30% 30%, rgba(16,185,129,0.55), rgba(251,191,36,0.35), rgba(244,114,182,0.18))",
+            background: `radial-gradient(circle at 30% 30%, rgba(16,185,129,0.55), rgba(251,191,36,0.35), rgba(244,114,182,0.18))`,
             animation: "blobFloatA 14s ease-in-out infinite",
             transform: `translate3d(${tilt.x * 8}px, ${tilt.y * 6}px, 0)`,
           }}
@@ -501,8 +462,7 @@ export default function Home() {
         <div
           className="absolute top-32 -right-24 h-80 w-80 rounded-full blur-3xl opacity-35"
           style={{
-            background:
-              "radial-gradient(circle at 35% 35%, rgba(244,114,182,0.35), rgba(34,197,94,0.22), rgba(59,130,246,0.12))",
+            background: `radial-gradient(circle at 35% 35%, rgba(244,114,182,0.35), rgba(34,197,94,0.22), rgba(59,130,246,0.12))`,
             animation: "blobFloatB 16s ease-in-out infinite",
             transform: `translate3d(${tilt.x * -10}px, ${tilt.y * 8}px, 0)`,
           }}
@@ -510,5 +470,290 @@ export default function Home() {
         <div
           className="absolute bottom-[-140px] left-[25%] h-[420px] w-[420px] rounded-full blur-3xl opacity-25"
           style={{
-            background:
-              "radial-gradient(circle at 40% 40%, rgba(251,191,36,0.42), rgba(16,
+            background: `radial-gradient(circle at 40% 40%, rgba(251,191,36,0.42), rgba(16,185,129,0.18), rgba(15,23,42,0.06))`,
+            animation: "blobFloatA 18s ease-in-out infinite",
+            transform: `translate3d(${tilt.x * 6}px, ${tilt.y * -8}px, 0)`,
+          }}
+        />
+      </div>
+
+      {/* App container */}
+      <div className="relative mx-auto max-w-md sm:max-w-6xl px-4 sm:px-6">
+        {/* Header */}
+        <header className="sticky top-0 z-40 pt-4">
+          <div className="rounded-[22px] border border-black/5 bg-white/70 backdrop-blur shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+            <nav className="flex items-center justify-between px-4 py-3">
+              <button
+                type="button"
+                onClick={() => scrollToId("home")}
+                className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-slate-900 transition-transform active:scale-[0.98]"
+              >
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600/10">
+                  🧋
+                </span>
+                {PROFILE.name}
+              </button>
+
+              <div className="hidden sm:flex items-center gap-2">
+                {NAV.slice(1).map((n) => (
+                  <button
+                    key={n.id}
+                    type="button"
+                    onClick={() => scrollToId(n.id)}
+                    className={[
+                      "rounded-full px-4 py-2 text-sm font-semibold transition",
+                      "border border-black/5 bg-white/60 backdrop-blur hover:bg-white/80",
+                      "active:scale-[0.98]",
+                      active === n.id ? "text-emerald-800" : "text-slate-700",
+                    ].join(" ")}
+                  >
+                    {n.label}
+                  </button>
+                ))}
+              </div>
+            </nav>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="pb-24 sm:pb-16">
+          {/* HOME */}
+          <section id="home" className="pt-6 sm:pt-10">
+            <GlassCard className="relative overflow-hidden">
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background: `linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.55) 50%, rgba(255,255,255,0) 100%)`,
+                  animation: "sheen 7.5s ease-in-out infinite",
+                  opacity: 0.08,
+                }}
+              />
+              <div className="p-6 sm:p-10">
+                <div className="flex flex-wrap gap-2">
+                  <Pill>{PROFILE.tagline}</Pill>
+                  <Pill>{PROFILE.location}</Pill>
+                  <Pill>Wilfrid Laurier University</Pill>
+                </div>
+
+                <h1 className="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight text-slate-900">
+                  {PROFILE.headline}
+                </h1>
+
+                <p className="mt-5 text-sm sm:text-lg text-slate-600 leading-relaxed">
+                  {PROFILE.summary}
+                </p>
+
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <PrimaryButton href={LINKS.github} ariaLabel="Open GitHub">
+                    GitHub
+                  </PrimaryButton>
+                  <SecondaryButton href={LINKS.linkedin} ariaLabel="Open LinkedIn">
+                    LinkedIn
+                  </SecondaryButton>
+                  <SecondaryButton href={`mailto:${LINKS.email}`} ariaLabel="Email Alex">
+                    Email
+                  </SecondaryButton>
+                </div>
+
+                <div className="mt-8 grid grid-cols-3 gap-3">
+                  <StatCard label="Production scale" value="1,000+ devices" />
+                  <StatCard label="Automation impact" value="~25% less setup" />
+                  <StatCard label="Focus" value="Reliable systems" />
+                </div>
+              </div>
+            </GlassCard>
+          </section>
+
+          {/* EXPERIENCE */}
+          <section id="work" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
+            <SectionTitle
+              eyebrow="EXPERIENCE"
+              title="Built for real environments."
+              desc="Hands-on work in production-style IoT systems with monitoring, automation, and reliability focus."
+            />
+
+            <div className="mt-6 space-y-4">
+              {EXPERIENCE.map((x) => (
+                <GlassCard key={`${x.company}-${x.role}`} className="p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-semibold text-slate-900">
+                        {x.role}
+                      </h3>
+                      <p className="mt-1 text-sm text-slate-600">{x.company}</p>
+                      <p className="mt-1 text-xs text-slate-500">
+                        {x.time} • {x.location}
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-emerald-600/10 px-3 py-1 text-xs font-semibold text-emerald-800">
+                      Internship
+                    </span>
+                  </div>
+
+                  <ul className="mt-5 space-y-2 text-sm text-slate-600">
+                    {x.bullets.map((b) => (
+                      <li key={b} className="flex gap-2">
+                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-slate-400/80" />
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </GlassCard>
+              ))}
+            </div>
+          </section>
+
+          {/* PROJECTS */}
+          <section id="projects" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
+            <SectionTitle
+              eyebrow="PROJECTS"
+              title="Swipe through selected work."
+              desc="Tap, skim, and explore. This section is built like a mobile app carousel with snap scrolling."
+            />
+
+            <div className="mt-6">
+              <div className="flex items-center justify-between">
+                <p className="text-sm text-slate-600">Tip: swipe left and right on mobile.</p>
+                <button
+                  type="button"
+                  onClick={() => scrollToId("contact")}
+                  className="rounded-full border border-black/5 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-800 backdrop-blur transition-transform active:scale-[0.98]"
+                >
+                  Contact →
+                </button>
+              </div>
+
+              <div className="mt-4 flex gap-4 overflow-x-auto scroll-smooth-ios snap-x snap-mandatory pb-2 pr-2">
+                <div className="w-2 shrink-0" />
+                {PROJECTS.map((p) => (
+                  <ProjectCard key={p.name} p={p} />
+                ))}
+                <div className="w-6 shrink-0" />
+              </div>
+            </div>
+          </section>
+
+          {/* SKILLS */}
+          <section id="skills" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
+            <SectionTitle
+              eyebrow="SKILLS"
+              title="Core tools I ship with."
+              desc="Grouped for quick scanning, with chip-style tags and app-like cards."
+            />
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {Object.entries(SKILLS).map(([k, v]) => (
+                <GlassCard key={k} className="p-6">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-semibold text-slate-900">{k}</h4>
+                    <span className="text-xs text-slate-500">{v.length} items</span>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {v.map((s) => (
+                      <SkillChip key={s} text={s} />
+                    ))}
+                  </div>
+                </GlassCard>
+              ))}
+            </div>
+          </section>
+
+          {/* CONTACT */}
+          <section id="contact" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
+            <SectionTitle
+              eyebrow="CONTACT"
+              title="Let’s connect."
+              desc="If you want to chat about internships, projects, or building reliable systems, reach out."
+            />
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <GlassCard className="p-6">
+                <div className="text-xs text-slate-600">Email</div>
+                <a
+                  href={`mailto:${LINKS.email}`}
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                >
+                  {LINKS.email}
+                </a>
+                <p className="mt-2 text-xs text-slate-500">Best for quick coordination.</p>
+              </GlassCard>
+
+              <GlassCard className="p-6">
+                <div className="text-xs text-slate-600">LinkedIn</div>
+                <a
+                  href={LINKS.linkedin}
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                >
+                  alexou8
+                </a>
+                <p className="mt-2 text-xs text-slate-500">Professional updates and messaging.</p>
+              </GlassCard>
+
+              <GlassCard className="p-6">
+                <div className="text-xs text-slate-600">GitHub</div>
+                <a
+                  href={LINKS.github}
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                >
+                  github.com/alexou8
+                </a>
+                <p className="mt-2 text-xs text-slate-500">Projects, code, and experiments.</p>
+              </GlassCard>
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <PrimaryButton href={`mailto:${LINKS.email}`} ariaLabel="Email Alex">
+                Email me
+              </PrimaryButton>
+              <SecondaryButton href={LINKS.linkedin} ariaLabel="Open LinkedIn">
+                LinkedIn
+              </SecondaryButton>
+              <SecondaryButton href={LINKS.github} ariaLabel="Open GitHub">
+                GitHub
+              </SecondaryButton>
+            </div>
+
+            <p className="mt-8 text-xs text-slate-500">
+              © {new Date().getFullYear()} {PROFILE.name}. Built with Next.js and Tailwind.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      {/* Bottom Tab Bar (mobile) */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
+        <div className="mx-auto max-w-md px-4 pb-4">
+          <div className="rounded-[22px] border border-black/5 bg-white/75 backdrop-blur shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
+            <div className="grid grid-cols-5 px-2 py-2">
+              {NAV.map((n) => {
+                const isActive = active === n.id;
+                return (
+                  <button
+                    key={n.id}
+                    type="button"
+                    onClick={() => scrollToId(n.id)}
+                    className={[
+                      "flex flex-col items-center justify-center gap-1 rounded-[18px] px-2 py-2",
+                      "transition-transform duration-200 active:scale-[0.97]",
+                      isActive ? "bg-emerald-600/10" : "bg-transparent",
+                    ].join(" ")}
+                  >
+                    <span className="text-base">{n.emoji}</span>
+                    <span
+                      className={[
+                        "text-[10px] font-semibold",
+                        isActive ? "text-emerald-800" : "text-slate-700",
+                      ].join(" ")}
+                    >
+                      {n.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
