@@ -212,10 +212,10 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-[11px] font-bold tracking-[0.28em] bg-gradient-to-r from-purple-400 via-pink-400 to-teal-400 bg-clip-text text-transparent">
+      <p className="text-[11px] font-bold tracking-[0.28em] text-purple-300 uppercase">
         {eyebrow}
       </p>
-      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">
+      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent [text-shadow:0_0_40px_rgba(255,255,255,0.5)]">
         {title}
       </h2>
       {desc ? (
@@ -268,7 +268,7 @@ function PrimaryButton({
         "text-white shadow-[0_10px_40px_rgba(139,69,255,0.4)]",
         "transition-all duration-500 hover:scale-105 hover:shadow-[0_20px_60px_rgba(139,69,255,0.6)]",
         "before:absolute before:inset-0 before:bg-gradient-to-r before:from-teal-500 before:via-purple-500 before:to-purple-600",
-        "before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-100",
+        "before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-70",
       ].join(" ")}
     >
       <span className="relative z-10">{children}</span>
