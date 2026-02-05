@@ -661,7 +661,7 @@ export default function Home() {
           <section id="contact" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
             <SectionTitle
               eyebrow="SIGNAL"
-              title="Let’s connect."
+              title="Establish contact."
               desc="If you want to discuss deployments, operations, or building fortified systems, send a signal."
             />
 
