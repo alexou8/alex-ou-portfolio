@@ -1,14 +1,13 @@
 "use client";
 
 // ============================================================
-// HeyTea-Inspired Mobile App Portfolio (Vercel + TS-safe)
+// Attack on Titan-Themed Portfolio (Survey Corps Edition)
 // Next.js App Router + Tailwind
-// - App shell header + mobile bottom tabs
-// - Stacked glass cards
-// - Press feedback + micro interactions
-// - Swipeable project carousel (scroll-snap)
-// - Floating gradient blobs (CSS keyframes)
-// NOTE: Uses plain <style> (no styled-jsx props) to avoid TS error.
+// - Military-inspired design with Survey Corps aesthetics
+// - Glass cards with strategic information display
+// - Press feedback + tactical interactions
+// - Swipeable mission carousel (scroll-snap)
+// - Dystopian gradient atmosphere (CSS keyframes)
 // ============================================================
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -48,10 +47,10 @@ const LINKS = {
 const PROFILE = {
   name: "Alex Ou",
   location: "Richmond Hill, ON",
-  tagline: "Software • Data • AI • Systems",
-  headline: "Building reliable software systems that turn data into decisions.",
+  tagline: "Survey Corps • Technology Division",
+  headline: "Defending humanity's progress through reliable software systems.",
   summary:
-    "Senior Computer Science student with experience across software engineering, data workflows, and applied AI. I’ve supported production IoT systems operating across 1,000+ devices, built backend services with FastAPI and PostgreSQL, and developed data pipelines and ML-driven insights to support real-world decision-making.",
+    "Senior Computer Science student and member of the Technology Division. I've fortified production IoT systems across 1,000+ devices, constructed backend fortifications with FastAPI and PostgreSQL, and engineered data reconnaissance pipelines to support strategic decision-making in the fight for technological advancement.",
 };
 
 const EXPERIENCE = [
@@ -195,7 +194,7 @@ function useActiveSection(sectionIds: string[]) {
 function Pill({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white/70 px-3 py-1 text-xs text-slate-700 shadow-[0_1px_0_rgba(0,0,0,0.02)] backdrop-blur transition-transform active:scale-[0.98]">
-      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500/80" />
+      <span className="h-1.5 w-1.5 rounded-full bg-amber-700/80" />
       {children}
     </span>
   );
@@ -212,7 +211,7 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-2xl">
-      <p className="text-[11px] font-semibold tracking-[0.26em] text-emerald-700/80">
+      <p className="text-[11px] font-semibold tracking-[0.26em] text-amber-900/80">
         {eyebrow}
       </p>
       <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900">
@@ -333,8 +332,8 @@ function ProjectCard({ p }: { p: Project }) {
           <h3 className="text-lg font-semibold text-slate-900">{p.name}</h3>
           <p className="mt-1 text-sm text-slate-600">{p.subtitle}</p>
         </div>
-        <span className="rounded-full bg-emerald-600/10 px-3 py-1 text-xs font-semibold text-emerald-800">
-          Featured
+        <span className="rounded-full bg-amber-700/10 px-3 py-1 text-xs font-semibold text-amber-900">
+          Active Mission
         </span>
       </div>
 
@@ -366,7 +365,7 @@ function ProjectCard({ p }: { p: Project }) {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
+              className="text-sm font-semibold text-amber-900 hover:text-amber-900"
             >
               {l.label} ↗
             </a>
@@ -385,11 +384,11 @@ export default function Home() {
 
   const NAV: NavItem[] = useMemo(
     () => [
-      { id: "home", label: "Home", emoji: "🏠" },
-      { id: "work", label: "Work", emoji: "🧩" },
-      { id: "projects", label: "Projects", emoji: "🧋" },
-      { id: "skills", label: "Skills", emoji: "✨" },
-      { id: "contact", label: "Contact", emoji: "✉️" },
+      { id: "home", label: "Home", emoji: "⚔️" },
+      { id: "work", label: "Missions", emoji: "🛡️" },
+      { id: "projects", label: "Arsenal", emoji: "⚙️" },
+      { id: "skills", label: "Training", emoji: "🎯" },
+      { id: "contact", label: "Signal", emoji: "📡" },
     ],
     []
   );
@@ -415,7 +414,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-slate-900">
+    <main className="min-h-screen bg-[#E8DCC4] text-slate-900">
       {/* Global keyframes (plain <style> avoids TS styled-jsx typing issue) */}
       <style>{`
         .reveal-init {
@@ -454,7 +453,7 @@ export default function Home() {
         <div
           className="absolute -top-20 -left-20 h-72 w-72 rounded-full blur-3xl opacity-40"
           style={{
-            background: `radial-gradient(circle at 30% 30%, rgba(16,185,129,0.55), rgba(251,191,36,0.35), rgba(244,114,182,0.18))`,
+            background: `radial-gradient(circle at 30% 30%, rgba(75,85,61,0.45), rgba(101,67,33,0.35), rgba(59,45,33,0.25))`,
             animation: "blobFloatA 14s ease-in-out infinite",
             transform: `translate3d(${tilt.x * 8}px, ${tilt.y * 6}px, 0)`,
           }}
@@ -462,7 +461,7 @@ export default function Home() {
         <div
           className="absolute top-32 -right-24 h-80 w-80 rounded-full blur-3xl opacity-35"
           style={{
-            background: `radial-gradient(circle at 35% 35%, rgba(244,114,182,0.35), rgba(34,197,94,0.22), rgba(59,130,246,0.12))`,
+            background: `radial-gradient(circle at 35% 35%, rgba(101,67,33,0.35), rgba(75,85,61,0.28), rgba(60,60,60,0.15))`,
             animation: "blobFloatB 16s ease-in-out infinite",
             transform: `translate3d(${tilt.x * -10}px, ${tilt.y * 8}px, 0)`,
           }}
@@ -470,7 +469,7 @@ export default function Home() {
         <div
           className="absolute bottom-[-140px] left-[25%] h-[420px] w-[420px] rounded-full blur-3xl opacity-25"
           style={{
-            background: `radial-gradient(circle at 40% 40%, rgba(251,191,36,0.42), rgba(16,185,129,0.18), rgba(15,23,42,0.06))`,
+            background: `radial-gradient(circle at 40% 40%, rgba(139,119,101,0.38), rgba(75,85,61,0.22), rgba(40,40,40,0.08))`,
             animation: "blobFloatA 18s ease-in-out infinite",
             transform: `translate3d(${tilt.x * 6}px, ${tilt.y * -8}px, 0)`,
           }}
@@ -488,8 +487,8 @@ export default function Home() {
                 onClick={() => scrollToId("home")}
                 className="inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-slate-900 transition-transform active:scale-[0.98]"
               >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600/10">
-                  🧋
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-700/10">
+                  ⚔️
                 </span>
                 {PROFILE.name}
               </button>
@@ -504,7 +503,7 @@ export default function Home() {
                       "rounded-full px-4 py-2 text-sm font-semibold transition",
                       "border border-black/5 bg-white/60 backdrop-blur hover:bg-white/80",
                       "active:scale-[0.98]",
-                      active === n.id ? "text-emerald-800" : "text-slate-700",
+                      active === n.id ? "text-amber-900" : "text-slate-700",
                     ].join(" ")}
                   >
                     {n.label}
@@ -532,7 +531,7 @@ export default function Home() {
                 <div className="flex flex-wrap gap-2">
                   <Pill>{PROFILE.tagline}</Pill>
                   <Pill>{PROFILE.location}</Pill>
-                  <Pill>Wilfrid Laurier University</Pill>
+                  <Pill>Wilfrid Laurier University • Training Corps</Pill>
                 </div>
 
                 <h1 className="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight text-slate-900">
@@ -556,9 +555,9 @@ export default function Home() {
                 </div>
 
                 <div className="mt-8 grid grid-cols-3 gap-3">
-                  <StatCard label="Production scale" value="1,000+ devices" />
-                  <StatCard label="Automation impact" value="~25% less setup" />
-                  <StatCard label="Focus" value="Reliable systems" />
+                  <StatCard label="Defended devices" value="1,000+ units" />
+                  <StatCard label="Efficiency gain" value="~25% deployment" />
+                  <StatCard label="Mission" value="Reliable systems" />
                 </div>
               </div>
             </GlassCard>
@@ -567,9 +566,9 @@ export default function Home() {
           {/* EXPERIENCE */}
           <section id="work" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
             <SectionTitle
-              eyebrow="EXPERIENCE"
-              title="Built for real environments."
-              desc="Hands-on work in production-style IoT systems with monitoring, automation, and reliability focus."
+              eyebrow="MISSIONS COMPLETED"
+              title="Deployed in real-world conditions."
+              desc="Field experience in production-grade IoT systems with reconnaissance, automation, and fortification protocols."
             />
 
             <div className="mt-6 space-y-4">
@@ -585,8 +584,8 @@ export default function Home() {
                         {x.time} • {x.location}
                       </p>
                     </div>
-                    <span className="rounded-full bg-emerald-600/10 px-3 py-1 text-xs font-semibold text-emerald-800">
-                      Internship
+                    <span className="rounded-full bg-amber-700/10 px-3 py-1 text-xs font-semibold text-amber-900">
+                      Deployment
                     </span>
                   </div>
 
@@ -606,14 +605,14 @@ export default function Home() {
           {/* PROJECTS */}
           <section id="projects" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
             <SectionTitle
-              eyebrow="PROJECTS"
-              title="Swipe through selected work."
-              desc="Tap, skim, and explore. This section is built like a mobile app carousel with snap scrolling."
+              eyebrow="ARSENAL"
+              title="Strategic operations overview."
+              desc="Tap, skim, and explore completed missions. This section uses tactical reconnaissance scrolling."
             />
 
             <div className="mt-6">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-slate-600">Tip: swipe left and right on mobile.</p>
+                <p className="text-sm text-slate-600">Tip: swipe to view mission details.</p>
                 <button
                   type="button"
                   onClick={() => scrollToId("contact")}
@@ -636,9 +635,9 @@ export default function Home() {
           {/* SKILLS */}
           <section id="skills" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
             <SectionTitle
-              eyebrow="SKILLS"
-              title="Core tools I ship with."
-              desc="Grouped for quick scanning, with chip-style tags and app-like cards."
+              eyebrow="TRAINING"
+              title="Core tactical equipment."
+              desc="Arsenal of tools and techniques mastered through continuous training."
             />
 
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -661,9 +660,9 @@ export default function Home() {
           {/* CONTACT */}
           <section id="contact" className="mt-10 sm:mt-14 reveal-init" data-reveal="true">
             <SectionTitle
-              eyebrow="CONTACT"
+              eyebrow="SIGNAL"
               title="Let’s connect."
-              desc="If you want to chat about internships, projects, or building reliable systems, reach out."
+              desc="If you want to discuss deployments, operations, or building fortified systems, send a signal."
             />
 
             <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -671,39 +670,39 @@ export default function Home() {
                 <div className="text-xs text-slate-600">Email</div>
                 <a
                   href={`mailto:${LINKS.email}`}
-                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-amber-900"
                 >
                   {LINKS.email}
                 </a>
-                <p className="mt-2 text-xs text-slate-500">Best for quick coordination.</p>
+                <p className="mt-2 text-xs text-slate-500">For urgent coordination.</p>
               </GlassCard>
 
               <GlassCard className="p-6">
                 <div className="text-xs text-slate-600">LinkedIn</div>
                 <a
                   href={LINKS.linkedin}
-                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-amber-900"
                 >
                   alexou8
                 </a>
-                <p className="mt-2 text-xs text-slate-500">Professional updates and messaging.</p>
+                <p className="mt-2 text-xs text-slate-500">Strategic communications hub.</p>
               </GlassCard>
 
               <GlassCard className="p-6">
                 <div className="text-xs text-slate-600">GitHub</div>
                 <a
                   href={LINKS.github}
-                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-emerald-800"
+                  className="mt-2 block text-sm font-semibold text-slate-900 hover:text-amber-900"
                 >
                   github.com/alexou8
                 </a>
-                <p className="mt-2 text-xs text-slate-500">Projects, code, and experiments.</p>
+                <p className="mt-2 text-xs text-slate-500">Mission archives and experiments.</p>
               </GlassCard>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <PrimaryButton href={`mailto:${LINKS.email}`} ariaLabel="Email Alex">
-                Email me
+                Send Signal
               </PrimaryButton>
               <SecondaryButton href={LINKS.linkedin} ariaLabel="Open LinkedIn">
                 LinkedIn
@@ -735,14 +734,14 @@ export default function Home() {
                     className={[
                       "flex flex-col items-center justify-center gap-1 rounded-[18px] px-2 py-2",
                       "transition-transform duration-200 active:scale-[0.97]",
-                      isActive ? "bg-emerald-600/10" : "bg-transparent",
+                      isActive ? "bg-amber-700/10" : "bg-transparent",
                     ].join(" ")}
                   >
                     <span className="text-base">{n.emoji}</span>
                     <span
                       className={[
                         "text-[10px] font-semibold",
-                        isActive ? "text-emerald-800" : "text-slate-700",
+                        isActive ? "text-amber-900" : "text-slate-700",
                       ].join(" ")}
                     >
                       {n.label}
