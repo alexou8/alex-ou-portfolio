@@ -1,14 +1,12 @@
 "use client";
 
 // ============================================================
-// HeyTea-Inspired Mobile App Portfolio (Vercel + TS-safe)
-// Next.js App Router + Tailwind
-// - App shell header + mobile bottom tabs
-// - Stacked glass cards
-// - Press feedback + micro interactions
-// - Swipeable project carousel (scroll-snap)
-// - Floating gradient blobs (CSS keyframes)
-// NOTE: Uses plain <style> (no styled-jsx props) to avoid TS error.
+// Claude Code Terminal-Inspired Portfolio
+// Next.js App Router + Tailwind + Terminal Aesthetics
+// - Terminal color scheme and monospace fonts
+// - Typing animations on scroll
+// - Backspace effects on scroll
+// - Terminal-style layout and interactions
 // ============================================================
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -131,7 +129,88 @@ function scrollToId(id: string) {
 }
 
 /* =========================
-   Reveal hook (subtle)
+   Typing Animation Hook
+========================= */
+function useTypingEffect(text: string, speed = 50) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    if (isTyping) {
+      let charIndex = 0;
+      const timer = setInterval(() => {
+        if (charIndex < text.length) {
+          setDisplayedText(text.slice(0, charIndex + 1));
+          charIndex++;
+        } else {
+          clearInterval(timer);
+        }
+      }, speed);
+      return () => clearInterval(timer);
+    }
+  }, [text, speed, isTyping]);
+
+  return { displayedText, startTyping: () => setIsTyping(true), isTyping };
+}
+
+/* =========================
+   Terminal Typing Component
+========================= */
+function TerminalText({ 
+  children, 
+  delay = 0,
+  speed = 30 
+}: { 
+  children: string; 
+  delay?: number;
+  speed?: number;
+}) {
+  const [visible, setVisible] = useState(false);
+  const [displayText, setDisplayText] = useState("");
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !visible) {
+          setTimeout(() => setVisible(true), delay);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [delay, visible]);
+
+  useEffect(() => {
+    if (visible && children) {
+      let charIndex = 0;
+      const text = children;
+      const timer = setInterval(() => {
+        if (charIndex <= text.length) {
+          setDisplayText(text.slice(0, charIndex));
+          charIndex++;
+        } else {
+          clearInterval(timer);
+        }
+      }, speed);
+      return () => clearInterval(timer);
+    }
+  }, [visible, children, speed]);
+
+  return (
+    <span ref={ref} className="inline-block">
+      {displayText}
+      {visible && displayText.length < children.length && (
+        <span className="terminal-cursor" />
+      )}
+    </span>
+  );
+}
+
+/* =========================
+   Reveal hook (terminal style)
 ========================= */
 function useScrollReveal() {
   useEffect(() => {
@@ -141,6 +220,13 @@ function useScrollReveal() {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add("reveal-show");
+            // Add terminal-reveal class to children.
+            const terminalElements = e.target.querySelectorAll<HTMLElement>(".terminal-reveal");
+            terminalElements.forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add("show");
+              }, index * 100);
+            });
             observer.unobserve(e.target);
           }
         });
@@ -194,8 +280,8 @@ function useActiveSection(sectionIds: string[]) {
 ========================= */
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-purple-500/20 bg-gradient-to-r from-purple-900/40 to-purple-800/30 backdrop-blur-xl px-4 py-1.5 text-xs text-purple-200 shadow-lg shadow-purple-900/20 transition-all duration-300 hover:scale-105 hover:shadow-purple-500/30">
-      <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-teal-400 animate-pulse" />
+    <span className="inline-flex items-center gap-2 rounded border border-[#3d342a] bg-[#2a2419] px-4 py-1.5 text-xs text-[#d4a574] font-mono transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_10px_rgba(212,165,116,0.3)]">
+      <span className="text-[#d4a574]">›</span>
       {children}
     </span>
   );
@@ -211,15 +297,15 @@ function SectionTitle({
   desc?: string;
 }) {
   return (
-    <div className="max-w-2xl">
-      <p className="text-[11px] font-bold tracking-[0.28em] text-purple-300 uppercase">
-        {eyebrow}
+    <div className="max-w-2xl font-mono">
+      <p className="text-[11px] font-bold tracking-[0.28em] text-[#9a8268] uppercase terminal-reveal">
+        <span className="inline-block">$ {eyebrow}</span>
       </p>
-      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent [text-shadow:0_0_40px_rgba(255,255,255,0.5)]">
+      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[#f4dbb8] terminal-reveal" style={{ animationDelay: '0.1s' }}>
         {title}
       </h2>
       {desc ? (
-        <p className="mt-4 text-sm sm:text-base text-gray-300 leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base text-[#d4a574] leading-relaxed terminal-reveal" style={{ animationDelay: '0.2s' }}>
           {desc}
         </p>
       ) : null}
@@ -237,10 +323,9 @@ function GlassCard({
   return (
     <div
       className={[
-        "rounded-3xl border border-purple-500/20 bg-gradient-to-br from-purple-900/20 via-black/40 to-purple-900/20 backdrop-blur-xl",
-        "shadow-[0_20px_60px_rgba(95,37,159,0.15),0_0_1px_rgba(139,69,255,0.3)]",
-        "transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_30px_80px_rgba(95,37,159,0.25),0_0_2px_rgba(139,69,255,0.5)]",
-        "hover:border-purple-400/30",
+        "rounded border border-[#3d342a] bg-[#2a2419]",
+        "shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
+        "transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_15px_rgba(212,165,116,0.2)]",
         className,
       ].join(" ")}
     >
@@ -263,16 +348,14 @@ function PrimaryButton({
       href={href}
       aria-label={ariaLabel}
       className={[
-        "group relative inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold overflow-hidden",
-        "bg-gradient-to-r from-purple-600 via-purple-500 to-teal-500",
-        "text-white shadow-[0_10px_40px_rgba(139,69,255,0.4)]",
-        "transition-all duration-500 hover:scale-105 hover:shadow-[0_20px_60px_rgba(139,69,255,0.6)]",
-        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-teal-500 before:via-purple-500 before:to-purple-600",
-        "before:opacity-0 before:transition-opacity before:duration-500 hover:before:opacity-70",
+        "group relative inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono overflow-hidden",
+        "bg-[#d4a574] border border-[#d4a574]",
+        "text-[#1e1813] shadow-[0_4px_12px_rgba(212,165,116,0.3)]",
+        "transition-all duration-300 hover:bg-[#f4dbb8] hover:shadow-[0_6px_20px_rgba(212,165,116,0.5)]",
       ].join(" ")}
     >
       <span className="relative z-10">{children}</span>
-      <span className="relative z-10 opacity-90 group-hover:translate-x-1 transition-transform duration-300">→</span>
+      <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-300">→</span>
     </a>
   );
 }
@@ -291,10 +374,10 @@ function SecondaryButton({
       href={href}
       aria-label={ariaLabel}
       className={[
-        "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-bold",
-        "border border-purple-500/30 bg-purple-900/20 text-purple-200 backdrop-blur-xl",
-        "shadow-[0_8px_32px_rgba(139,69,255,0.2)]",
-        "transition-all duration-500 hover:scale-105 hover:bg-purple-900/40 hover:border-purple-400/50 hover:shadow-[0_12px_48px_rgba(139,69,255,0.35)]",
+        "group inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono",
+        "border border-[#3d342a] bg-transparent text-[#d4a574]",
+        "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
+        "transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574] hover:shadow-[0_4px_12px_rgba(212,165,116,0.3)]",
       ].join(" ")}
     >
       {children}
@@ -305,16 +388,16 @@ function SecondaryButton({
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <GlassCard className="p-5 group hover:bg-gradient-to-br hover:from-purple-800/30 hover:via-black/50 hover:to-teal-900/20">
-      <div className="text-xs text-gray-400 group-hover:text-purple-300 transition-colors duration-300">{label}</div>
-      <div className="mt-2 text-lg font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-teal-300 transition-all duration-300">{value}</div>
+    <GlassCard className="p-5 group terminal-border">
+      <div className="text-xs text-[#9a8268] group-hover:text-[#d4a574] transition-colors duration-300 font-mono">{label}</div>
+      <div className="mt-2 text-lg font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">{value}</div>
     </GlassCard>
   );
 }
 
 function SkillChip({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-medium bg-gradient-to-r from-purple-900/40 to-purple-800/30 text-purple-200 border border-purple-500/30 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-gradient-to-r hover:from-purple-800/60 hover:to-purple-700/50 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/30">
+    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#2a2419] text-[#d4a574] border border-[#3d342a] transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_8px_rgba(212,165,116,0.2)]">
       {text}
     </span>
   );
@@ -325,29 +408,28 @@ function ProjectCard({ p }: { p: Project }) {
     <div
       className={[
         "snap-center min-w-[86%] sm:min-w-[460px]",
-        "rounded-3xl border border-purple-500/25 bg-gradient-to-br from-purple-900/25 via-black/50 to-purple-900/20 backdrop-blur-xl",
-        "shadow-[0_20px_60px_rgba(95,37,159,0.2),0_0_1px_rgba(139,69,255,0.4)]",
-        "p-7",
-        "transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_30px_90px_rgba(95,37,159,0.35),0_0_2px_rgba(139,69,255,0.6)]",
-        "hover:border-purple-400/40",
+        "rounded border border-[#3d342a] bg-[#2a2419]",
+        "shadow-[0_4px_12px_rgba(0,0,0,0.3)]",
+        "p-7 font-mono",
+        "transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_6px_20px_rgba(212,165,116,0.2)]",
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">{p.name}</h3>
-          <p className="mt-2 text-sm text-gray-300">{p.subtitle}</p>
+          <h3 className="text-xl font-bold text-[#f4dbb8]">{p.name}</h3>
+          <p className="mt-2 text-sm text-[#9a8268]">{p.subtitle}</p>
         </div>
-        <span className="rounded-full bg-gradient-to-r from-purple-600/30 to-teal-600/30 border border-purple-400/30 px-3.5 py-1.5 text-xs font-bold text-purple-200 backdrop-blur-sm">
+        <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574]">
           Featured
         </span>
       </div>
 
-      <p className="mt-5 text-sm text-gray-300 leading-relaxed">{p.impact}</p>
+      <p className="mt-5 text-sm text-[#d4a574] leading-relaxed">{p.impact}</p>
 
-      <ul className="mt-5 space-y-2.5 text-sm text-gray-400">
+      <ul className="mt-5 space-y-2.5 text-sm text-[#9a8268]">
         {p.bullets.slice(0, 3).map((b) => (
           <li key={b} className="flex gap-3">
-            <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-teal-400" />
+            <span className="mt-[7px] text-[#d4a574]">›</span>
             <span>{b}</span>
           </li>
         ))}
@@ -357,7 +439,7 @@ function ProjectCard({ p }: { p: Project }) {
         {p.stack.map((s) => (
           <span
             key={s}
-            className="rounded-full border border-purple-500/30 bg-purple-900/30 px-3 py-1 text-xs font-medium text-purple-200 backdrop-blur-sm transition-all duration-300 hover:bg-purple-800/40 hover:border-purple-400/50"
+            className="rounded border border-[#3d342a] bg-[#1e1813] px-3 py-1 text-xs font-medium text-[#d4a574] transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
           >
             {s}
           </span>
@@ -370,7 +452,7 @@ function ProjectCard({ p }: { p: Project }) {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-teal-300 transition-all duration-300"
+              className="text-sm font-bold text-[#d4a574] hover:text-[#f4dbb8] transition-all duration-300"
             >
               {l.label} ↗
             </a>
@@ -419,7 +501,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#0f0f0f] via-[#1a1a1a] to-[#191919] text-white">
+    <main className="min-h-screen bg-[#1e1813] text-[#d4a574] font-mono">
       {/* Global keyframes (plain <style> avoids TS styled-jsx typing issue) */}
       <style>{`
         .reveal-init {
@@ -432,104 +514,37 @@ export default function Home() {
           transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes blobFloatA {
-          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-          33% { transform: translate3d(20px, -25px, 0) scale(1.08); }
-          66% { transform: translate3d(-15px, 15px, 0) scale(0.95); }
-        }
-
-        @keyframes blobFloatB {
-          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-          33% { transform: translate3d(-18px, 20px, 0) scale(1.06); }
-          66% { transform: translate3d(18px, -12px, 0) scale(0.97); }
-        }
-
-        @keyframes blobFloatC {
-          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-          50% { transform: translate3d(10px, 25px, 0) scale(1.1); }
-        }
-
-        @keyframes sheen {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+        @keyframes terminalGlow {
+          0%, 100% { box-shadow: 0 0 5px rgba(212, 165, 116, 0.1); }
+          50% { box-shadow: 0 0 15px rgba(212, 165, 116, 0.2); }
         }
 
         .scroll-smooth-ios { -webkit-overflow-scrolling: touch; }
         
-        .gradient-border {
+        .terminal-border {
           position: relative;
-          background: linear-gradient(135deg, rgba(95, 37, 159, 0.1), rgba(0, 224, 222, 0.08));
-          border: 1px solid transparent;
+          background: #2a2419;
+          border: 1px solid #3d342a;
         }
         
-        .gradient-border::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          border-radius: inherit;
-          padding: 1px;
-          background: linear-gradient(135deg, rgba(95, 37, 159, 0.4), rgba(0, 224, 222, 0.3));
-          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-          -webkit-mask-composite: xor;
-          mask-composite: exclude;
+        .terminal-border:hover {
+          border-color: #d4a574;
+          animation: terminalGlow 2s ease-in-out infinite;
         }
       `}</style>
 
-      {/* Background blobs - Wealthsimple purple & HeyTea gradients */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div
-          className="absolute -top-32 -left-32 h-96 w-96 rounded-full blur-3xl opacity-30"
-          style={{
-            background: `radial-gradient(circle at 30% 30%, rgba(95, 37, 159, 0.6), rgba(139, 69, 255, 0.4), rgba(0, 224, 222, 0.2))`,
-            animation: "blobFloatA 20s ease-in-out infinite",
-            transform: `translate3d(${tilt.x * 12}px, ${tilt.y * 8}px, 0)`,
-          }}
-        />
-        <div
-          className="absolute top-20 -right-40 h-[500px] w-[500px] rounded-full blur-3xl opacity-25"
-          style={{
-            background: `radial-gradient(circle at 40% 40%, rgba(0, 224, 222, 0.5), rgba(255, 107, 181, 0.35), rgba(95, 37, 159, 0.25))`,
-            animation: "blobFloatB 22s ease-in-out infinite",
-            transform: `translate3d(${tilt.x * -14}px, ${tilt.y * 10}px, 0)`,
-          }}
-        />
-        <div
-          className="absolute bottom-[-180px] left-[20%] h-[560px] w-[560px] rounded-full blur-3xl opacity-20"
-          style={{
-            background: `radial-gradient(circle at 50% 50%, rgba(139, 69, 255, 0.45), rgba(0, 224, 222, 0.3), rgba(95, 37, 159, 0.2))`,
-            animation: "blobFloatC 24s ease-in-out infinite",
-            transform: `translate3d(${tilt.x * 8}px, ${tilt.y * -12}px, 0)`,
-          }}
-        />
-        <div
-          className="absolute top-[60%] right-[15%] h-[400px] w-[400px] rounded-full blur-3xl opacity-15"
-          style={{
-            background: `radial-gradient(circle at 50% 50%, rgba(255, 107, 181, 0.4), rgba(139, 69, 255, 0.3), rgba(0, 224, 222, 0.2))`,
-            animation: "blobFloatA 26s ease-in-out infinite",
-            transform: `translate3d(${tilt.x * -8}px, ${tilt.y * 6}px, 0)`,
-          }}
-        />
-      </div>
-
       {/* App container */}
       <div className="relative mx-auto max-w-md sm:max-w-6xl px-4 sm:px-6">
-        {/* Header */}
+        {/* Header - Terminal style */}
         <header className="sticky top-0 z-40 pt-4">
-          <div className="rounded-3xl border border-purple-500/25 bg-gradient-to-r from-purple-900/30 via-black/50 to-purple-900/30 backdrop-blur-xl shadow-[0_10px_40px_rgba(95,37,159,0.2)]">
-            <nav className="flex items-center justify-between px-5 py-3.5">
+          <div className="rounded border border-[#3d342a] bg-[#2a2419] shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+            <nav className="flex items-center justify-between px-5 py-3.5 font-mono">
               <button
                 type="button"
                 onClick={() => scrollToId("home")}
-                className="inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:scale-105"
+                className="inline-flex items-center gap-3 rounded px-4 py-2.5 text-sm font-bold text-[#d4a574] transition-all duration-300 hover:text-[#f4dbb8]"
               >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-teal-600 shadow-lg shadow-purple-500/30">
-                  🧋
-                </span>
+                <span className="text-[#d4a574]">$</span>
                 {PROFILE.name}
               </button>
 
@@ -540,12 +555,11 @@ export default function Home() {
                     type="button"
                     onClick={() => scrollToId(n.id)}
                     className={[
-                      "rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300",
-                      "border border-purple-500/20 backdrop-blur-xl",
-                      "hover:scale-105",
+                      "rounded px-5 py-2.5 text-sm font-bold transition-all duration-300",
+                      "border",
                       active === n.id 
-                        ? "bg-gradient-to-r from-purple-600/40 to-purple-500/40 text-purple-200 border-purple-400/40 shadow-lg shadow-purple-500/20" 
-                        : "bg-purple-900/20 text-gray-300 hover:bg-purple-800/30 hover:text-white hover:border-purple-400/30",
+                        ? "bg-[#3d342a] text-[#f4dbb8] border-[#d4a574]" 
+                        : "bg-transparent text-[#9a8268] hover:bg-[#2a2419] hover:text-[#d4a574] border-transparent hover:border-[#3d342a]",
                     ].join(" ")}
                   >
                     {n.label}
@@ -560,14 +574,7 @@ export default function Home() {
         <div className="pb-24 sm:pb-16">
           {/* HOME */}
           <section id="home" className="pt-6 sm:pt-10">
-            <GlassCard className="relative overflow-hidden group">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-20"
-                style={{
-                  background: `linear-gradient(135deg, rgba(139,69,255,0.3) 0%, transparent 50%, rgba(0,224,222,0.3) 100%)`,
-                  animation: "sheen 8s ease-in-out infinite",
-                }}
-              />
+            <GlassCard className="relative overflow-hidden group terminal-border">
               <div className="p-7 sm:p-12">
                 <div className="flex flex-wrap gap-3">
                   <Pill>{PROFILE.tagline}</Pill>
@@ -575,11 +582,16 @@ export default function Home() {
                   <Pill>Wilfrid Laurier University</Pill>
                 </div>
 
-                <h1 className="mt-8 text-4xl sm:text-6xl font-bold tracking-tight bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent leading-tight">
-                  {PROFILE.headline}
-                </h1>
+                <div className="mt-8">
+                  <div className="text-[#9a8268] text-sm font-mono mb-2">
+                    $ whoami
+                  </div>
+                  <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#f4dbb8] leading-tight font-mono">
+                    {PROFILE.headline}
+                  </h1>
+                </div>
 
-                <p className="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed max-w-3xl">
+                <p className="mt-6 text-base sm:text-lg text-[#d4a574] leading-relaxed max-w-3xl font-mono">
                   {PROFILE.summary}
                 </p>
 
@@ -614,26 +626,26 @@ export default function Home() {
 
             <div className="mt-8 space-y-5">
               {EXPERIENCE.map((x) => (
-                <GlassCard key={`${x.company}-${x.role}`} className="p-7 group">
+                <GlassCard key={`${x.company}-${x.role}`} className="p-7 group terminal-border">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-teal-300 transition-all duration-300">
+                      <h3 className="text-lg sm:text-xl font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">
                         {x.role}
                       </h3>
-                      <p className="mt-2 text-sm text-gray-300">{x.company}</p>
-                      <p className="mt-1.5 text-xs text-gray-400">
+                      <p className="mt-2 text-sm text-[#d4a574] font-mono">{x.company}</p>
+                      <p className="mt-1.5 text-xs text-[#9a8268] font-mono">
                         {x.time} • {x.location}
                       </p>
                     </div>
-                    <span className="rounded-full bg-gradient-to-r from-purple-600/30 to-teal-600/30 border border-purple-400/30 px-3.5 py-1.5 text-xs font-bold text-purple-200 backdrop-blur-sm">
+                    <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574] font-mono">
                       Internship
                     </span>
                   </div>
 
-                  <ul className="mt-6 space-y-3 text-sm text-gray-300">
+                  <ul className="mt-6 space-y-3 text-sm text-[#d4a574] font-mono">
                     {x.bullets.map((b) => (
                       <li key={b} className="flex gap-3">
-                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-teal-400" />
+                        <span className="mt-[7px] text-[#d4a574]">›</span>
                         <span>{b}</span>
                       </li>
                     ))}
@@ -653,11 +665,11 @@ export default function Home() {
 
             <div className="mt-8">
               <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-gray-400">Tip: swipe left and right on mobile.</p>
+                <p className="text-sm text-[#9a8268] font-mono">Tip: swipe left and right on mobile.</p>
                 <button
                   type="button"
                   onClick={() => scrollToId("contact")}
-                  className="rounded-full border border-purple-500/30 bg-purple-900/20 px-5 py-2.5 text-sm font-bold text-purple-200 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-purple-800/30 hover:border-purple-400/50"
+                  className="rounded border border-[#3d342a] bg-transparent px-5 py-2.5 text-sm font-bold text-[#d4a574] font-mono transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
                 >
                   Contact →
                 </button>
@@ -753,7 +765,7 @@ export default function Home() {
               </SecondaryButton>
             </div>
 
-            <p className="mt-10 text-xs text-gray-500">
+            <p className="mt-10 text-xs text-[#9a8268] font-mono">
               © {new Date().getFullYear()} {PROFILE.name}. Built with Next.js and Tailwind.
             </p>
           </section>
@@ -763,7 +775,7 @@ export default function Home() {
       {/* Bottom Tab Bar (mobile) */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
         <div className="mx-auto max-w-md px-4 pb-4">
-          <div className="rounded-3xl border border-purple-500/25 bg-gradient-to-r from-purple-900/40 via-black/60 to-purple-900/40 backdrop-blur-xl shadow-[0_-10px_60px_rgba(95,37,159,0.3)]">
+          <div className="rounded border border-[#3d342a] bg-[#2a2419] shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
             <div className="grid grid-cols-5 px-2 py-2">
               {NAV.map((n) => {
                 const isActive = active === n.id;
@@ -773,18 +785,18 @@ export default function Home() {
                     type="button"
                     onClick={() => scrollToId(n.id)}
                     className={[
-                      "flex flex-col items-center justify-center gap-1.5 rounded-2xl px-2 py-3",
+                      "flex flex-col items-center justify-center gap-1.5 rounded px-2 py-3 font-mono",
                       "transition-all duration-300",
                       isActive 
-                        ? "bg-gradient-to-br from-purple-600/40 to-purple-500/40 shadow-lg shadow-purple-500/20" 
-                        : "bg-transparent hover:bg-purple-900/30",
+                        ? "bg-[#3d342a] border border-[#d4a574]" 
+                        : "bg-transparent hover:bg-[#1e1813]",
                     ].join(" ")}
                   >
                     <span className="text-lg">{n.emoji}</span>
                     <span
                       className={[
                         "text-[10px] font-bold",
-                        isActive ? "text-purple-200" : "text-gray-400",
+                        isActive ? "text-[#d4a574]" : "text-[#9a8268]",
                       ].join(" ")}
                     >
                       {n.label}

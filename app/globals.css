@@ -1,28 +1,154 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Claude Code Terminal Theme */
+  --terminal-bg: #1e1813;
+  --terminal-bg-light: #2a2419;
+  --terminal-border: #3d342a;
+  --terminal-text: #d4a574;
+  --terminal-text-bright: #f4dbb8;
+  --terminal-text-dim: #9a8268;
+  --terminal-accent: #d4a574;
+  --terminal-cursor: #d4a574;
+  --background: var(--terminal-bg);
+  --foreground: var(--terminal-text);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-mono);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-geist-mono), 'Courier New', monospace;
+  letter-spacing: 0.02em;
+}
+
+/* Terminal typing effect */
+@keyframes typewriter {
+  from { 
+    width: 0;
+    opacity: 1;
+  }
+  to { 
+    width: 100%;
+    opacity: 1;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--terminal-cursor);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+.terminal-line {
+  overflow: hidden;
+  border-right: 2px solid var(--terminal-cursor);
+  white-space: nowrap;
+  animation: 
+    typewriter 1.5s steps(40) 0.5s forwards,
+    blink 0.75s step-end infinite;
+}
+
+.terminal-line.typed {
+  border-right: none;
+  animation: none;
+}
+
+/* Terminal reveal animations with typing effect */
+.terminal-reveal {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.terminal-reveal.show {
+  opacity: 1;
+}
+
+/* Backspace animation */
+@keyframes backspace {
+  from { 
+    max-width: 100%;
+    opacity: 1;
+  }
+  to { 
+    max-width: 0%;
+    opacity: 0;
+  }
+}
+
+.terminal-backspace {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: backspace 0.8s steps(30) forwards;
+}
+
+/* Terminal prompt and cursor enhancements */
+.terminal-prompt::before {
+  content: '$ ';
+  color: var(--terminal-text-dim);
+  margin-right: 0.5em;
+}
+
+.terminal-line-hover::after {
+  content: '▋';
+  color: var(--terminal-cursor);
+  animation: blink 1s step-end infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.terminal-line-hover:hover::after {
+  opacity: 1;
+}
+
+/* Scanline effect for terminal authenticity */
+.terminal-scanline {
+  position: relative;
+}
+
+.terminal-scanline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(212, 165, 116, 0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 /* ===== Motion helpers (subtle, modern) ===== */
