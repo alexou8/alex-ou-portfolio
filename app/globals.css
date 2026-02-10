@@ -30,53 +30,125 @@ body {
 
 /* Terminal typing effect */
 @keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
+  from { 
+    width: 0;
+    opacity: 1;
+  }
+  to { 
+    width: 100%;
+    opacity: 1;
+  }
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .terminal-cursor {
   display: inline-block;
-  width: 8px;
-  height: 1.2em;
+  width: 2px;
+  height: 1.1em;
   background: var(--terminal-cursor);
   margin-left: 2px;
   animation: blink 1s step-end infinite;
   vertical-align: text-bottom;
 }
 
-.terminal-text {
+.terminal-line {
   overflow: hidden;
-  white-space: nowrap;
   border-right: 2px solid var(--terminal-cursor);
-  animation: typewriter 2s steps(40) 1s forwards, blink 0.75s step-end infinite;
+  white-space: nowrap;
+  animation: 
+    typewriter 1.5s steps(40) 0.5s forwards,
+    blink 0.75s step-end infinite;
 }
 
-/* Terminal reveal animations */
+.terminal-line.typed {
+  border-right: none;
+  animation: none;
+}
+
+/* Terminal reveal animations with typing effect */
 .terminal-reveal {
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 400ms ease-out, transform 400ms ease-out;
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 .terminal-reveal.show {
   opacity: 1;
-  transform: translateY(0);
 }
 
 /* Backspace animation */
 @keyframes backspace {
-  from { width: 100%; }
-  to { width: 0%; }
+  from { 
+    max-width: 100%;
+    opacity: 1;
+  }
+  to { 
+    max-width: 0%;
+    opacity: 0;
+  }
 }
 
 .terminal-backspace {
   overflow: hidden;
   white-space: nowrap;
-  animation: backspace 1s steps(40) forwards;
+  animation: backspace 0.8s steps(30) forwards;
+}
+
+/* Terminal prompt and cursor enhancements */
+.terminal-prompt::before {
+  content: '$ ';
+  color: var(--terminal-text-dim);
+  margin-right: 0.5em;
+}
+
+.terminal-line-hover::after {
+  content: '▋';
+  color: var(--terminal-cursor);
+  animation: blink 1s step-end infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.terminal-line-hover:hover::after {
+  opacity: 1;
+}
+
+/* Scanline effect for terminal authenticity */
+.terminal-scanline {
+  position: relative;
+}
+
+.terminal-scanline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(212, 165, 116, 0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 /* ===== Motion helpers (subtle, modern) ===== */

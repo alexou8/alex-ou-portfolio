@@ -210,7 +210,7 @@ function TerminalText({
 }
 
 /* =========================
-   Reveal hook (subtle)
+   Reveal hook (terminal style)
 ========================= */
 function useScrollReveal() {
   useEffect(() => {
@@ -220,6 +220,13 @@ function useScrollReveal() {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add("reveal-show");
+            // Add terminal-reveal class to children
+            const terminalElements = e.target.querySelectorAll<HTMLElement>(".terminal-reveal");
+            terminalElements.forEach((el, index) => {
+              setTimeout(() => {
+                el.classList.add("show");
+              }, index * 100);
+            });
             observer.unobserve(e.target);
           }
         });
@@ -291,14 +298,14 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-2xl font-mono">
-      <p className="text-[11px] font-bold tracking-[0.28em] text-[#9a8268] uppercase">
-        $ {eyebrow}
+      <p className="text-[11px] font-bold tracking-[0.28em] text-[#9a8268] uppercase terminal-reveal">
+        <span className="inline-block">$ {eyebrow}</span>
       </p>
-      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[#f4dbb8]">
+      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[#f4dbb8] terminal-reveal" style={{ animationDelay: '0.1s' }}>
         {title}
       </h2>
       {desc ? (
-        <p className="mt-4 text-sm sm:text-base text-[#d4a574] leading-relaxed">
+        <p className="mt-4 text-sm sm:text-base text-[#d4a574] leading-relaxed terminal-reveal" style={{ animationDelay: '0.2s' }}>
           {desc}
         </p>
       ) : null}
@@ -575,9 +582,14 @@ export default function Home() {
                   <Pill>Wilfrid Laurier University</Pill>
                 </div>
 
-                <h1 className="mt-8 text-4xl sm:text-6xl font-bold tracking-tight text-[#f4dbb8] leading-tight font-mono">
-                  {PROFILE.headline}
-                </h1>
+                <div className="mt-8">
+                  <div className="text-[#9a8268] text-sm font-mono mb-2">
+                    $ whoami
+                  </div>
+                  <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#f4dbb8] leading-tight font-mono">
+                    {PROFILE.headline}
+                  </h1>
+                </div>
 
                 <p className="mt-6 text-base sm:text-lg text-[#d4a574] leading-relaxed max-w-3xl font-mono">
                   {PROFILE.summary}
