@@ -235,3 +235,26 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
   }
 }
 
+/* Shared terminal and animation styles */
+.terminal-border {
+  position: relative;
+  background: #24272f;
+  border: 1px solid #3a3f4b;
+}
+
+.terminal-border:hover {
+  border-color: #b8b8b8;
+  animation: terminalGlow 2s ease-in-out infinite;
+}
+
+@keyframes terminalGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(184, 184, 184, 0.1); }
+  50% { box-shadow: 0 0 15px rgba(184, 184, 184, 0.2); }
+}
+
+.terminal-reveal {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+
