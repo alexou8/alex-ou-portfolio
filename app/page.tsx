@@ -280,8 +280,8 @@ function useActiveSection(sectionIds: string[]) {
 ========================= */
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded border border-[#3d342a] bg-[#2a2419] px-4 py-1.5 text-xs text-[#d4a574] font-mono transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_10px_rgba(212,165,116,0.3)]">
-      <span className="text-[#d4a574]">›</span>
+    <span className="inline-flex items-center gap-2 rounded border border-[#2a2e38] bg-[#1a1d23] px-4 py-1.5 text-xs text-[#a0a0a0] font-mono transition-all duration-300 hover:border-[#a0a0a0] hover:shadow-[0_0_10px_rgba(160,160,160,0.3)]">
+      <span className="text-[#a0a0a0]">›</span>
       {children}
     </span>
   );
@@ -298,14 +298,14 @@ function SectionTitle({
 }) {
   return (
     <div className="max-w-2xl font-mono">
-      <p className="text-[11px] font-bold tracking-[0.28em] text-[#9a8268] uppercase terminal-reveal">
+      <p className="text-[11px] font-bold tracking-[0.28em] text-[#6b6b6b] uppercase terminal-reveal">
         <span className="inline-block">$ {eyebrow}</span>
       </p>
-      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[#f4dbb8] terminal-reveal" style={{ animationDelay: '0.1s' }}>
+      <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-[#e0e0e0] terminal-reveal" style={{ animationDelay: '0.1s' }}>
         {title}
       </h2>
       {desc ? (
-        <p className="mt-4 text-sm sm:text-base text-[#d4a574] leading-relaxed terminal-reveal" style={{ animationDelay: '0.2s' }}>
+        <p className="mt-4 text-sm sm:text-base text-[#a0a0a0] leading-relaxed terminal-reveal" style={{ animationDelay: '0.2s' }}>
           {desc}
         </p>
       ) : null}
@@ -323,9 +323,9 @@ function GlassCard({
   return (
     <div
       className={[
-        "rounded border border-[#3d342a] bg-[#2a2419]",
+        "rounded border border-[#2a2e38] bg-[#1a1d23]",
         "shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
-        "transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_15px_rgba(212,165,116,0.2)]",
+        "transition-all duration-300 hover:border-[#a0a0a0] hover:shadow-[0_0_15px_rgba(160,160,160,0.2)]",
         className,
       ].join(" ")}
     >
@@ -349,9 +349,9 @@ function PrimaryButton({
       aria-label={ariaLabel}
       className={[
         "group relative inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono overflow-hidden",
-        "bg-[#d4a574] border border-[#d4a574]",
-        "text-[#1e1813] shadow-[0_4px_12px_rgba(212,165,116,0.3)]",
-        "transition-all duration-300 hover:bg-[#f4dbb8] hover:shadow-[0_6px_20px_rgba(212,165,116,0.5)]",
+        "bg-[#a0a0a0] border border-[#a0a0a0]",
+        "text-[#0f1115] shadow-[0_4px_12px_rgba(160,160,160,0.3)]",
+        "transition-all duration-300 hover:bg-[#e0e0e0] hover:shadow-[0_6px_20px_rgba(160,160,160,0.5)]",
       ].join(" ")}
     >
       <span className="relative z-10">{children}</span>
@@ -375,9 +375,9 @@ function SecondaryButton({
       aria-label={ariaLabel}
       className={[
         "group inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono",
-        "border border-[#3d342a] bg-transparent text-[#d4a574]",
+        "border border-[#2a2e38] bg-transparent text-[#a0a0a0]",
         "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
-        "transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574] hover:shadow-[0_4px_12px_rgba(212,165,116,0.3)]",
+        "transition-all duration-300 hover:bg-[#1a1d23] hover:border-[#a0a0a0] hover:shadow-[0_4px_12px_rgba(160,160,160,0.3)]",
       ].join(" ")}
     >
       {children}
@@ -389,15 +389,15 @@ function SecondaryButton({
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <GlassCard className="p-5 group terminal-border">
-      <div className="text-xs text-[#9a8268] group-hover:text-[#d4a574] transition-colors duration-300 font-mono">{label}</div>
-      <div className="mt-2 text-lg font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">{value}</div>
+      <div className="text-xs text-[#6b6b6b] group-hover:text-[#a0a0a0] transition-colors duration-300 font-mono">{label}</div>
+      <div className="mt-2 text-lg font-bold text-[#e0e0e0] group-hover:text-[#a0a0a0] transition-all duration-300 font-mono">{value}</div>
     </GlassCard>
   );
 }
 
 function SkillChip({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#2a2419] text-[#d4a574] border border-[#3d342a] transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_8px_rgba(212,165,116,0.2)]">
+    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#1a1d23] text-[#a0a0a0] border border-[#2a2e38] transition-all duration-300 hover:border-[#a0a0a0] hover:shadow-[0_0_8px_rgba(160,160,160,0.2)]">
       {text}
     </span>
   );
@@ -408,28 +408,28 @@ function ProjectCard({ p }: { p: Project }) {
     <div
       className={[
         "snap-center min-w-[86%] sm:min-w-[460px]",
-        "rounded border border-[#3d342a] bg-[#2a2419]",
+        "rounded border border-[#2a2e38] bg-[#1a1d23]",
         "shadow-[0_4px_12px_rgba(0,0,0,0.3)]",
         "p-7 font-mono",
-        "transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_6px_20px_rgba(212,165,116,0.2)]",
+        "transition-all duration-300 hover:border-[#a0a0a0] hover:shadow-[0_6px_20px_rgba(160,160,160,0.2)]",
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold text-[#f4dbb8]">{p.name}</h3>
-          <p className="mt-2 text-sm text-[#9a8268]">{p.subtitle}</p>
+          <h3 className="text-xl font-bold text-[#e0e0e0]">{p.name}</h3>
+          <p className="mt-2 text-sm text-[#6b6b6b]">{p.subtitle}</p>
         </div>
-        <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574]">
+        <span className="rounded bg-[#2a2e38] border border-[#a0a0a0] px-3.5 py-1.5 text-xs font-bold text-[#a0a0a0]">
           Featured
         </span>
       </div>
 
-      <p className="mt-5 text-sm text-[#d4a574] leading-relaxed">{p.impact}</p>
+      <p className="mt-5 text-sm text-[#a0a0a0] leading-relaxed">{p.impact}</p>
 
-      <ul className="mt-5 space-y-2.5 text-sm text-[#9a8268]">
+      <ul className="mt-5 space-y-2.5 text-sm text-[#6b6b6b]">
         {p.bullets.slice(0, 3).map((b) => (
           <li key={b} className="flex gap-3">
-            <span className="mt-[7px] text-[#d4a574]">›</span>
+            <span className="mt-[7px] text-[#a0a0a0]">›</span>
             <span>{b}</span>
           </li>
         ))}
@@ -439,7 +439,7 @@ function ProjectCard({ p }: { p: Project }) {
         {p.stack.map((s) => (
           <span
             key={s}
-            className="rounded border border-[#3d342a] bg-[#1e1813] px-3 py-1 text-xs font-medium text-[#d4a574] transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
+            className="rounded border border-[#2a2e38] bg-[#0f1115] px-3 py-1 text-xs font-medium text-[#a0a0a0] transition-all duration-300 hover:bg-[#1a1d23] hover:border-[#a0a0a0]"
           >
             {s}
           </span>
@@ -452,7 +452,7 @@ function ProjectCard({ p }: { p: Project }) {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-bold text-[#d4a574] hover:text-[#f4dbb8] transition-all duration-300"
+              className="text-sm font-bold text-[#a0a0a0] hover:text-[#e0e0e0] transition-all duration-300"
             >
               {l.label} ↗
             </a>
@@ -490,7 +490,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#1e1813] text-[#d4a574] font-mono">
+    <main className="min-h-screen bg-[#0f1115] text-[#a0a0a0] font-mono">
       {/* Scroll Progress Indicator */}
       <ScrollProgress />
       
@@ -518,12 +518,12 @@ export default function Home() {
         
         .terminal-border {
           position: relative;
-          background: #2a2419;
-          border: 1px solid #3d342a;
+          background: #1a1d23;
+          border: 1px solid #2a2e38;
         }
         
         .terminal-border:hover {
-          border-color: #d4a574;
+          border-color: #a0a0a0;
           animation: terminalGlow 2s ease-in-out infinite;
         }
       `}</style>
@@ -532,14 +532,14 @@ export default function Home() {
       <div className="relative mx-auto max-w-md sm:max-w-6xl px-4 sm:px-6">
         {/* Header - Terminal style */}
         <header className="sticky top-0 z-40 pt-4">
-          <div className="rounded border border-[#3d342a] bg-[#2a2419] shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+          <div className="rounded border border-[#2a2e38] bg-[#1a1d23] shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
             <nav className="flex items-center justify-between px-5 py-3.5 font-mono">
               <button
                 type="button"
                 onClick={() => scrollToId("home")}
-                className="inline-flex items-center gap-3 rounded px-4 py-2.5 text-sm font-bold text-[#d4a574] transition-all duration-300 hover:text-[#f4dbb8]"
+                className="inline-flex items-center gap-3 rounded px-4 py-2.5 text-sm font-bold text-[#a0a0a0] transition-all duration-300 hover:text-[#e0e0e0]"
               >
-                <span className="text-[#d4a574]">$</span>
+                <span className="text-[#a0a0a0]">$</span>
                 {aboutMe.name}
               </button>
 
@@ -553,8 +553,8 @@ export default function Home() {
                       "nav-link rounded px-5 py-2.5 text-sm font-bold transition-all duration-300",
                       "border",
                       active === n.id 
-                        ? "active bg-[#3d342a] text-[#f4dbb8] border-[#d4a574]" 
-                        : "bg-transparent text-[#9a8268] hover:bg-[#2a2419] hover:text-[#d4a574] border-transparent hover:border-[#3d342a]",
+                        ? "active bg-[#2a2e38] text-[#e0e0e0] border-[#a0a0a0]" 
+                        : "bg-transparent text-[#6b6b6b] hover:bg-[#1a1d23] hover:text-[#a0a0a0] border-transparent hover:border-[#2a2e38]",
                     ].join(" ")}
                   >
                     {n.label}
@@ -578,19 +578,19 @@ export default function Home() {
                 </div>
 
                 <div className="mt-8">
-                  <div className="text-[#9a8268] text-sm font-mono mb-2">
+                  <div className="text-[#6b6b6b] text-sm font-mono mb-2">
                     $ whoami
                   </div>
                   {/* Typewriter rotating headline */}
-                  <div className="text-2xl sm:text-3xl font-bold tracking-tight text-[#f4dbb8] mb-4">
+                  <div className="text-2xl sm:text-3xl font-bold tracking-tight text-[#e0e0e0] mb-4">
                     <TypewriterHeadline headlines={aboutMe.rotatingHeadlines} />
                   </div>
-                  <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#d4a574] leading-tight font-mono">
+                  <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#a0a0a0] leading-tight font-mono">
                     {aboutMe.headline}
                   </h1>
                 </div>
 
-                <p className="mt-6 text-base sm:text-lg text-[#d4a574] leading-relaxed max-w-3xl font-mono">
+                <p className="mt-6 text-base sm:text-lg text-[#a0a0a0] leading-relaxed max-w-3xl font-mono">
                   {aboutMe.summary}
                 </p>
 
@@ -629,23 +629,23 @@ export default function Home() {
                 <GlassCard key={`${x.company}-${x.role}`} className="p-7 group terminal-border">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">
+                      <h3 className="text-lg sm:text-xl font-bold text-[#e0e0e0] group-hover:text-[#a0a0a0] transition-all duration-300 font-mono">
                         {x.role}
                       </h3>
-                      <p className="mt-2 text-sm text-[#d4a574] font-mono">{x.company}</p>
-                      <p className="mt-1.5 text-xs text-[#9a8268] font-mono">
+                      <p className="mt-2 text-sm text-[#a0a0a0] font-mono">{x.company}</p>
+                      <p className="mt-1.5 text-xs text-[#6b6b6b] font-mono">
                         {x.time} • {x.location}
                       </p>
                     </div>
-                    <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574] font-mono">
+                    <span className="rounded bg-[#2a2e38] border border-[#a0a0a0] px-3.5 py-1.5 text-xs font-bold text-[#a0a0a0] font-mono">
                       Internship
                     </span>
                   </div>
 
-                  <ul className="mt-6 space-y-3 text-sm text-[#d4a574] font-mono">
+                  <ul className="mt-6 space-y-3 text-sm text-[#a0a0a0] font-mono">
                     {x.bullets.map((b) => (
                       <li key={b} className="flex gap-3">
-                        <span className="mt-[7px] text-[#d4a574]">›</span>
+                        <span className="mt-[7px] text-[#a0a0a0]">›</span>
                         <span>{b}</span>
                       </li>
                     ))}
@@ -667,11 +667,11 @@ export default function Home() {
 
             <div className="mt-8">
               <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-[#9a8268] font-mono">Tip: swipe left and right on mobile.</p>
+                <p className="text-sm text-[#6b6b6b] font-mono">Tip: swipe left and right on mobile.</p>
                 <button
                   type="button"
                   onClick={() => scrollToId("contact")}
-                  className="rounded border border-[#3d342a] bg-transparent px-5 py-2.5 text-sm font-bold text-[#d4a574] font-mono transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
+                  className="rounded border border-[#2a2e38] bg-transparent px-5 py-2.5 text-sm font-bold text-[#a0a0a0] font-mono transition-all duration-300 hover:bg-[#1a1d23] hover:border-[#a0a0a0]"
                 >
                   Contact →
                 </button>
@@ -771,7 +771,7 @@ export default function Home() {
               </SecondaryButton>
             </div>
 
-            <p className="mt-10 text-xs text-[#9a8268] font-mono">
+            <p className="mt-10 text-xs text-[#6b6b6b] font-mono">
               © {new Date().getFullYear()} {aboutMe.name}. Built with Next.js and Tailwind.
             </p>
           </section>
@@ -782,7 +782,7 @@ export default function Home() {
       {/* Bottom Tab Bar (mobile) */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
         <div className="mx-auto max-w-md px-4 pb-4">
-          <div className="rounded border border-[#3d342a] bg-[#2a2419] shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
+          <div className="rounded border border-[#2a2e38] bg-[#1a1d23] shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
             <div className="grid grid-cols-5 px-2 py-2">
               {navigation.map((n) => {
                 const isActive = active === n.id;
@@ -795,15 +795,15 @@ export default function Home() {
                       "flex flex-col items-center justify-center gap-1.5 rounded px-2 py-3 font-mono",
                       "transition-all duration-300",
                       isActive 
-                        ? "bg-[#3d342a] border border-[#d4a574]" 
-                        : "bg-transparent hover:bg-[#1e1813]",
+                        ? "bg-[#2a2e38] border border-[#a0a0a0]" 
+                        : "bg-transparent hover:bg-[#0f1115]",
                     ].join(" ")}
                   >
                     <span className="text-lg">{n.emoji}</span>
                     <span
                       className={[
                         "text-[10px] font-bold",
-                        isActive ? "text-[#d4a574]" : "text-[#9a8268]",
+                        isActive ? "text-[#a0a0a0]" : "text-[#6b6b6b]",
                       ].join(" ")}
                     >
                       {n.label}

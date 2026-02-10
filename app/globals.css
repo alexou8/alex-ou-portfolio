@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Claude Code Terminal Theme */
-  --terminal-bg: #1e1813;
-  --terminal-bg-light: #2a2419;
-  --terminal-border: #3d342a;
-  --terminal-text: #d4a574;
-  --terminal-text-bright: #f4dbb8;
-  --terminal-text-dim: #9a8268;
-  --terminal-accent: #d4a574;
-  --terminal-cursor: #d4a574;
+  /* Claude Code Terminal Theme - Dark Grey/Grey/White */
+  --terminal-bg: #0f1115;
+  --terminal-bg-light: #1a1d23;
+  --terminal-border: #2a2e38;
+  --terminal-text: #a0a0a0;
+  --terminal-text-bright: #e0e0e0;
+  --terminal-text-dim: #6b6b6b;
+  --terminal-accent: #a0a0a0;
+  --terminal-cursor: #a0a0a0;
   --background: var(--terminal-bg);
   --foreground: var(--terminal-text);
 }
@@ -139,7 +139,7 @@ body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(212, 165, 116, 0.03) 50%,
+    rgba(160, 160, 160, 0.03) 50%,
     transparent 100%
   );
   pointer-events: none;
