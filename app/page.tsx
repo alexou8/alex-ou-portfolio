@@ -137,11 +137,11 @@ function useTypingEffect(text: string, speed = 50) {
 
   useEffect(() => {
     if (isTyping) {
-      let i = 0;
+      let charIndex = 0;
       const timer = setInterval(() => {
-        if (i < text.length) {
-          setDisplayedText(text.slice(0, i + 1));
-          i++;
+        if (charIndex < text.length) {
+          setDisplayedText(text.slice(0, charIndex + 1));
+          charIndex++;
         } else {
           clearInterval(timer);
         }
@@ -185,12 +185,12 @@ function TerminalText({
 
   useEffect(() => {
     if (visible && children) {
-      let i = 0;
+      let charIndex = 0;
       const text = children;
       const timer = setInterval(() => {
-        if (i <= text.length) {
-          setDisplayText(text.slice(0, i));
-          i++;
+        if (charIndex <= text.length) {
+          setDisplayText(text.slice(0, charIndex));
+          charIndex++;
         } else {
           clearInterval(timer);
         }
@@ -220,7 +220,7 @@ function useScrollReveal() {
         entries.forEach((e) => {
           if (e.isIntersecting) {
             e.target.classList.add("reveal-show");
-            // Add terminal-reveal class to children
+            // Add terminal-reveal class to children.
             const terminalElements = e.target.querySelectorAll<HTMLElement>(".terminal-reveal");
             terminalElements.forEach((el, index) => {
               setTimeout(() => {
