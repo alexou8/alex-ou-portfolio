@@ -13,7 +13,7 @@ export function FloatingObjects() {
         className="absolute w-96 h-96 rounded-full opacity-10 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, rgba(160,160,160,0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(184,184,184,0.3) 0%, transparent 70%)",
           top: "-10%",
           left: "-10%",
           animation: "float1 20s ease-in-out infinite",
@@ -25,7 +25,7 @@ export function FloatingObjects() {
         className="absolute w-80 h-80 rounded-full opacity-10 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, rgba(224,224,224,0.25) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(240,240,240,0.25) 0%, transparent 70%)",
           top: "10%",
           right: "-5%",
           animation: "float2 25s ease-in-out infinite",
@@ -37,7 +37,7 @@ export function FloatingObjects() {
         className="absolute w-72 h-72 rounded-full opacity-10 blur-3xl"
         style={{
           background:
-            "radial-gradient(circle, rgba(107,107,107,0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(133,133,133,0.3) 0%, transparent 70%)",
           bottom: "15%",
           right: "10%",
           animation: "float3 22s ease-in-out infinite",
