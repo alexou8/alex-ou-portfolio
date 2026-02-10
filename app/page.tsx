@@ -381,16 +381,16 @@ function SecondaryButton({
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <GlassCard className="p-5 group hover:bg-gradient-to-br hover:from-purple-800/30 hover:via-black/50 hover:to-teal-900/20">
-      <div className="text-xs text-gray-400 group-hover:text-purple-300 transition-colors duration-300">{label}</div>
-      <div className="mt-2 text-lg font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-teal-300 transition-all duration-300">{value}</div>
+    <GlassCard className="p-5 group terminal-border">
+      <div className="text-xs text-[#9a8268] group-hover:text-[#d4a574] transition-colors duration-300 font-mono">{label}</div>
+      <div className="mt-2 text-lg font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">{value}</div>
     </GlassCard>
   );
 }
 
 function SkillChip({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center rounded-full px-3.5 py-1.5 text-xs font-medium bg-gradient-to-r from-purple-900/40 to-purple-800/30 text-purple-200 border border-purple-500/30 backdrop-blur-sm transition-all duration-300 hover:scale-110 hover:bg-gradient-to-r hover:from-purple-800/60 hover:to-purple-700/50 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/30">
+    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#2a2419] text-[#d4a574] border border-[#3d342a] transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_0_8px_rgba(212,165,116,0.2)]">
       {text}
     </span>
   );
@@ -401,29 +401,28 @@ function ProjectCard({ p }: { p: Project }) {
     <div
       className={[
         "snap-center min-w-[86%] sm:min-w-[460px]",
-        "rounded-3xl border border-purple-500/25 bg-gradient-to-br from-purple-900/25 via-black/50 to-purple-900/20 backdrop-blur-xl",
-        "shadow-[0_20px_60px_rgba(95,37,159,0.2),0_0_1px_rgba(139,69,255,0.4)]",
-        "p-7",
-        "transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_30px_90px_rgba(95,37,159,0.35),0_0_2px_rgba(139,69,255,0.6)]",
-        "hover:border-purple-400/40",
+        "rounded border border-[#3d342a] bg-[#2a2419]",
+        "shadow-[0_4px_12px_rgba(0,0,0,0.3)]",
+        "p-7 font-mono",
+        "transition-all duration-300 hover:border-[#d4a574] hover:shadow-[0_6px_20px_rgba(212,165,116,0.2)]",
       ].join(" ")}
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-xl font-bold bg-gradient-to-r from-white via-purple-100 to-white bg-clip-text text-transparent">{p.name}</h3>
-          <p className="mt-2 text-sm text-gray-300">{p.subtitle}</p>
+          <h3 className="text-xl font-bold text-[#f4dbb8]">{p.name}</h3>
+          <p className="mt-2 text-sm text-[#9a8268]">{p.subtitle}</p>
         </div>
-        <span className="rounded-full bg-gradient-to-r from-purple-600/30 to-teal-600/30 border border-purple-400/30 px-3.5 py-1.5 text-xs font-bold text-purple-200 backdrop-blur-sm">
+        <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574]">
           Featured
         </span>
       </div>
 
-      <p className="mt-5 text-sm text-gray-300 leading-relaxed">{p.impact}</p>
+      <p className="mt-5 text-sm text-[#d4a574] leading-relaxed">{p.impact}</p>
 
-      <ul className="mt-5 space-y-2.5 text-sm text-gray-400">
+      <ul className="mt-5 space-y-2.5 text-sm text-[#9a8268]">
         {p.bullets.slice(0, 3).map((b) => (
           <li key={b} className="flex gap-3">
-            <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-teal-400" />
+            <span className="mt-[7px] text-[#d4a574]">›</span>
             <span>{b}</span>
           </li>
         ))}
@@ -433,7 +432,7 @@ function ProjectCard({ p }: { p: Project }) {
         {p.stack.map((s) => (
           <span
             key={s}
-            className="rounded-full border border-purple-500/30 bg-purple-900/30 px-3 py-1 text-xs font-medium text-purple-200 backdrop-blur-sm transition-all duration-300 hover:bg-purple-800/40 hover:border-purple-400/50"
+            className="rounded border border-[#3d342a] bg-[#1e1813] px-3 py-1 text-xs font-medium text-[#d4a574] transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
           >
             {s}
           </span>
@@ -446,7 +445,7 @@ function ProjectCard({ p }: { p: Project }) {
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-bold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-teal-300 transition-all duration-300"
+              className="text-sm font-bold text-[#d4a574] hover:text-[#f4dbb8] transition-all duration-300"
             >
               {l.label} ↗
             </a>
@@ -615,26 +614,26 @@ export default function Home() {
 
             <div className="mt-8 space-y-5">
               {EXPERIENCE.map((x) => (
-                <GlassCard key={`${x.company}-${x.role}`} className="p-7 group">
+                <GlassCard key={`${x.company}-${x.role}`} className="p-7 group terminal-border">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent group-hover:from-purple-200 group-hover:to-teal-300 transition-all duration-300">
+                      <h3 className="text-lg sm:text-xl font-bold text-[#f4dbb8] group-hover:text-[#d4a574] transition-all duration-300 font-mono">
                         {x.role}
                       </h3>
-                      <p className="mt-2 text-sm text-gray-300">{x.company}</p>
-                      <p className="mt-1.5 text-xs text-gray-400">
+                      <p className="mt-2 text-sm text-[#d4a574] font-mono">{x.company}</p>
+                      <p className="mt-1.5 text-xs text-[#9a8268] font-mono">
                         {x.time} • {x.location}
                       </p>
                     </div>
-                    <span className="rounded-full bg-gradient-to-r from-purple-600/30 to-teal-600/30 border border-purple-400/30 px-3.5 py-1.5 text-xs font-bold text-purple-200 backdrop-blur-sm">
+                    <span className="rounded bg-[#3d342a] border border-[#d4a574] px-3.5 py-1.5 text-xs font-bold text-[#d4a574] font-mono">
                       Internship
                     </span>
                   </div>
 
-                  <ul className="mt-6 space-y-3 text-sm text-gray-300">
+                  <ul className="mt-6 space-y-3 text-sm text-[#d4a574] font-mono">
                     {x.bullets.map((b) => (
                       <li key={b} className="flex gap-3">
-                        <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-gradient-to-r from-purple-400 to-teal-400" />
+                        <span className="mt-[7px] text-[#d4a574]">›</span>
                         <span>{b}</span>
                       </li>
                     ))}
@@ -654,11 +653,11 @@ export default function Home() {
 
             <div className="mt-8">
               <div className="flex items-center justify-between mb-5">
-                <p className="text-sm text-gray-400">Tip: swipe left and right on mobile.</p>
+                <p className="text-sm text-[#9a8268] font-mono">Tip: swipe left and right on mobile.</p>
                 <button
                   type="button"
                   onClick={() => scrollToId("contact")}
-                  className="rounded-full border border-purple-500/30 bg-purple-900/20 px-5 py-2.5 text-sm font-bold text-purple-200 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-purple-800/30 hover:border-purple-400/50"
+                  className="rounded border border-[#3d342a] bg-transparent px-5 py-2.5 text-sm font-bold text-[#d4a574] font-mono transition-all duration-300 hover:bg-[#2a2419] hover:border-[#d4a574]"
                 >
                   Contact →
                 </button>
@@ -754,7 +753,7 @@ export default function Home() {
               </SecondaryButton>
             </div>
 
-            <p className="mt-10 text-xs text-gray-500">
+            <p className="mt-10 text-xs text-[#9a8268] font-mono">
               © {new Date().getFullYear()} {PROFILE.name}. Built with Next.js and Tailwind.
             </p>
           </section>
@@ -764,7 +763,7 @@ export default function Home() {
       {/* Bottom Tab Bar (mobile) */}
       <div className="fixed bottom-0 left-0 right-0 z-50 sm:hidden">
         <div className="mx-auto max-w-md px-4 pb-4">
-          <div className="rounded-3xl border border-purple-500/25 bg-gradient-to-r from-purple-900/40 via-black/60 to-purple-900/40 backdrop-blur-xl shadow-[0_-10px_60px_rgba(95,37,159,0.3)]">
+          <div className="rounded border border-[#3d342a] bg-[#2a2419] shadow-[0_-4px_12px_rgba(0,0,0,0.3)]">
             <div className="grid grid-cols-5 px-2 py-2">
               {NAV.map((n) => {
                 const isActive = active === n.id;
@@ -774,18 +773,18 @@ export default function Home() {
                     type="button"
                     onClick={() => scrollToId(n.id)}
                     className={[
-                      "flex flex-col items-center justify-center gap-1.5 rounded-2xl px-2 py-3",
+                      "flex flex-col items-center justify-center gap-1.5 rounded px-2 py-3 font-mono",
                       "transition-all duration-300",
                       isActive 
-                        ? "bg-gradient-to-br from-purple-600/40 to-purple-500/40 shadow-lg shadow-purple-500/20" 
-                        : "bg-transparent hover:bg-purple-900/30",
+                        ? "bg-[#3d342a] border border-[#d4a574]" 
+                        : "bg-transparent hover:bg-[#1e1813]",
                     ].join(" ")}
                   >
                     <span className="text-lg">{n.emoji}</span>
                     <span
                       className={[
                         "text-[10px] font-bold",
-                        isActive ? "text-purple-200" : "text-gray-400",
+                        isActive ? "text-[#d4a574]" : "text-[#9a8268]",
                       ].join(" ")}
                     >
                       {n.label}
