@@ -1,28 +1,82 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Claude Code Terminal Theme */
+  --terminal-bg: #1e1813;
+  --terminal-bg-light: #2a2419;
+  --terminal-border: #3d342a;
+  --terminal-text: #d4a574;
+  --terminal-text-bright: #f4dbb8;
+  --terminal-text-dim: #9a8268;
+  --terminal-accent: #d4a574;
+  --terminal-cursor: #d4a574;
+  --background: var(--terminal-bg);
+  --foreground: var(--terminal-text);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-mono);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--font-geist-mono), 'Courier New', monospace;
+  letter-spacing: 0.02em;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Terminal typing effect */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background: var(--terminal-cursor);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+.terminal-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--terminal-cursor);
+  animation: typewriter 2s steps(40) 1s forwards, blink 0.75s step-end infinite;
+}
+
+/* Terminal reveal animations */
+.terminal-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+.terminal-reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Backspace animation */
+@keyframes backspace {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+.terminal-backspace {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: backspace 1s steps(40) forwards;
 }
 
 /* ===== Motion helpers (subtle, modern) ===== */
