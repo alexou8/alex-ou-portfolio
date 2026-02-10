@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Claude Code Terminal Theme */
-  --terminal-bg: #1e1813;
-  --terminal-bg-light: #2a2419;
-  --terminal-border: #3d342a;
-  --terminal-text: #d4a574;
-  --terminal-text-bright: #f4dbb8;
-  --terminal-text-dim: #9a8268;
-  --terminal-accent: #d4a574;
-  --terminal-cursor: #d4a574;
+  /* Claude Code Terminal Theme - Lighter Grey/White */
+  --terminal-bg: #1a1d23;
+  --terminal-bg-light: #24272f;
+  --terminal-border: #3a3f4b;
+  --terminal-text: #b8b8b8;
+  --terminal-text-bright: #f0f0f0;
+  --terminal-text-dim: #858585;
+  --terminal-accent: #b8b8b8;
+  --terminal-cursor: #b8b8b8;
   --background: var(--terminal-bg);
   --foreground: var(--terminal-text);
 }
@@ -139,7 +139,7 @@ body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(212, 165, 116, 0.03) 50%,
+    rgba(184, 184, 184, 0.03) 50%,
     transparent 100%
   );
   pointer-events: none;
@@ -197,4 +197,64 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 /* app/globals.css */
 html { scroll-behavior: smooth; }
 body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Animated nav link underline with pseudo-element */
+.nav-link {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--terminal-accent);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link.active::after {
+  background: var(--terminal-text-bright);
+}
+
+/* Smooth color transitions for nav links */
+.nav-link {
+  transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link::after {
+    transition: none;
+  }
+}
+
+/* Shared terminal and animation styles */
+.terminal-border {
+  position: relative;
+  background: #24272f;
+  border: 1px solid #3a3f4b;
+}
+
+.terminal-border:hover {
+  border-color: #b8b8b8;
+  animation: terminalGlow 2s ease-in-out infinite;
+}
+
+@keyframes terminalGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(184, 184, 184, 0.1); }
+  50% { box-shadow: 0 0 15px rgba(184, 184, 184, 0.2); }
+}
+
+.terminal-reveal {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
 
