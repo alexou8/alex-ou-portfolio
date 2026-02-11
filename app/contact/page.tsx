@@ -27,6 +27,7 @@ function PrimaryButton({
         "bg-[#b8b8b8] border border-[#b8b8b8]",
         "text-[#1a1d23] shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
         "transition-all duration-300 hover:bg-[#f0f0f0] hover:shadow-[0_6px_20px_rgba(184,184,184,0.5)]",
+        "hover:-translate-y-0.5",
       ].join(" ")}
     >
       <span className="relative z-10">{children}</span>
@@ -53,6 +54,7 @@ function SecondaryButton({
         "border border-[#3a3f4b] bg-transparent text-[#b8b8b8]",
         "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
         "transition-all duration-300 hover:bg-[#24272f] hover:border-[#b8b8b8] hover:shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
+        "hover:-translate-y-0.5",
       ].join(" ")}
     >
       {children}
@@ -76,55 +78,65 @@ export default function ContactPage() {
           />
 
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <GlassCard className="p-7 group">
-              <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">Email</div>
-              <a
-                href={`mailto:${contactLinks.email}`}
-                className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
-              >
-                {contactLinks.email}
-              </a>
-              <p className="mt-3 text-xs text-[#858585]">Best for quick coordination.</p>
-            </GlassCard>
+            <AnimatedSection delay={0.3} direction="up">
+              <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
+                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">Email</div>
+                <a
+                  href={`mailto:${contactLinks.email}`}
+                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                >
+                  {contactLinks.email}
+                </a>
+                <p className="mt-3 text-xs text-[#858585]">Best for quick coordination.</p>
+              </GlassCard>
+            </AnimatedSection>
 
-            <GlassCard className="p-7 group">
-              <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">LinkedIn</div>
-              <a
-                href={contactLinks.linkedin}
-                className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
-              >
-                alexou8
-              </a>
-              <p className="mt-3 text-xs text-[#858585]">Professional updates and messaging.</p>
-            </GlassCard>
+            <AnimatedSection delay={0.4} direction="up">
+              <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
+                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">LinkedIn</div>
+                <a
+                  href={contactLinks.linkedin}
+                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                >
+                  alexou8
+                </a>
+                <p className="mt-3 text-xs text-[#858585]">Professional updates and messaging.</p>
+              </GlassCard>
+            </AnimatedSection>
 
-            <GlassCard className="p-7 group">
-              <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">GitHub</div>
-              <a
-                href={contactLinks.github}
-                className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
-              >
-                github.com/alexou8
-              </a>
-              <p className="mt-3 text-xs text-[#858585]">Projects, code, and experiments.</p>
-            </GlassCard>
+            <AnimatedSection delay={0.5} direction="up">
+              <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
+                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">GitHub</div>
+                <a
+                  href={contactLinks.github}
+                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                >
+                  github.com/alexou8
+                </a>
+                <p className="mt-3 text-xs text-[#858585]">Projects, code, and experiments.</p>
+              </GlassCard>
+            </AnimatedSection>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <PrimaryButton href={`mailto:${contactLinks.email}`} ariaLabel="Email Alex">
-              Email me
-            </PrimaryButton>
-            <SecondaryButton href={contactLinks.linkedin} ariaLabel="Open LinkedIn">
-              LinkedIn
-            </SecondaryButton>
-            <SecondaryButton href={contactLinks.github} ariaLabel="Open GitHub">
-              GitHub
-            </SecondaryButton>
-          </div>
+          <AnimatedSection delay={0.6} direction="up">
+            <div className="mt-8 flex flex-wrap gap-4">
+              <PrimaryButton href={`mailto:${contactLinks.email}`} ariaLabel="Email Alex">
+                Email me
+              </PrimaryButton>
+              <SecondaryButton href={contactLinks.linkedin} ariaLabel="Open LinkedIn">
+                LinkedIn
+              </SecondaryButton>
+              <SecondaryButton href={contactLinks.github} ariaLabel="Open GitHub">
+                GitHub
+              </SecondaryButton>
+            </div>
+          </AnimatedSection>
 
-          <p className="mt-10 text-xs text-[#858585] font-mono">
-            © {new Date().getFullYear()} {aboutMe.name}. Built with Next.js and Tailwind.
-          </p>
+          <AnimatedSection delay={0.7} direction="up">
+            <p className="mt-10 text-xs text-[#858585] font-mono">
+              © {new Date().getFullYear()} {aboutMe.name}. Built with Next.js and Tailwind.
+            </p>
+          </AnimatedSection>
         </section>
       </AnimatedSection>
     </PageLayout>
