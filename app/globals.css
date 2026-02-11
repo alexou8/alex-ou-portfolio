@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Claude Code Terminal Theme - Lighter Grey/White */
+  /* Dark Theme (default) */
   --terminal-bg: #1a1d23;
   --terminal-bg-light: #24272f;
   --terminal-border: #3a3f4b;
@@ -10,6 +10,20 @@
   --terminal-text-dim: #858585;
   --terminal-accent: #b8b8b8;
   --terminal-cursor: #b8b8b8;
+  --background: var(--terminal-bg);
+  --foreground: var(--terminal-text);
+}
+
+/* Light Theme */
+html.light {
+  --terminal-bg: #ffffff;
+  --terminal-bg-light: #f5f5f5;
+  --terminal-border: #d0d0d0;
+  --terminal-text: #333333;
+  --terminal-text-bright: #000000;
+  --terminal-text-dim: #666666;
+  --terminal-accent: #333333;
+  --terminal-cursor: #333333;
   --background: var(--terminal-bg);
   --foreground: var(--terminal-text);
 }
@@ -238,12 +252,13 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 /* Shared terminal and animation styles */
 .terminal-border {
   position: relative;
-  background: #24272f;
-  border: 1px solid #3a3f4b;
+  background: var(--terminal-bg-light);
+  border: 1px solid var(--terminal-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .terminal-border:hover {
-  border-color: #b8b8b8;
+  border-color: var(--terminal-accent);
   animation: terminalGlow 2s ease-in-out infinite;
 }
 
@@ -258,3 +273,31 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 }
 
 
+
+/* Theme transition support for specific elements */
+body,
+main,
+header,
+nav,
+button,
+a,
+div[class*="border"],
+div[class*="bg-"],
+span[class*="text-"],
+p[class*="text-"] {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  main,
+  header,
+  nav,
+  button,
+  a,
+  div,
+  span,
+  p {
+    transition: none !important;
+  }
+}
