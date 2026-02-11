@@ -11,7 +11,7 @@ import { skillCategories } from "@/app/lib/data";
 ========================= */
 function SkillChip({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#24272f] text-[#b8b8b8] border border-[#3a3f4b] transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_8px_rgba(184,184,184,0.2)]">
+    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#24272f] text-[#b8b8b8] border border-[#3a3f4b] transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_8px_rgba(184,184,184,0.2)] hover:-translate-y-0.5">
       {text}
     </span>
   );
@@ -32,22 +32,24 @@ export default function SkillsPage() {
           />
 
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {skillCategories.map((item) => (
-              <GlassCard key={item.category} className="p-7 group">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-base font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300">
-                    {item.category}
-                  </h4>
-                  <span className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">
-                    {item.skills.length} items
-                  </span>
-                </div>
-                <div className="mt-5 flex flex-wrap gap-2.5">
-                  {item.skills.map((s) => (
-                    <SkillChip key={s} text={s} />
-                  ))}
-                </div>
-              </GlassCard>
+            {skillCategories.map((item, index) => (
+              <AnimatedSection key={item.category} delay={0.2 + index * 0.1} direction="up">
+                <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-base font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300">
+                      {item.category}
+                    </h4>
+                    <span className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">
+                      {item.skills.length} items
+                    </span>
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-2.5">
+                    {item.skills.map((s) => (
+                      <SkillChip key={s} text={s} />
+                    ))}
+                  </div>
+                </GlassCard>
+              </AnimatedSection>
             ))}
           </div>
         </section>
