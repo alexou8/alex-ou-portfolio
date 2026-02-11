@@ -11,7 +11,14 @@ import { skillCategories } from "@/app/lib/data";
 ========================= */
 function SkillChip({ text }: { text: string }) {
   return (
-    <span className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono bg-[#24272f] text-[#b8b8b8] border border-[#3a3f4b] transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_8px_rgba(184,184,184,0.2)] hover:-translate-y-0.5">
+    <span 
+      className="inline-flex items-center rounded px-3.5 py-1.5 text-xs font-medium font-mono transition-all duration-300 hover:shadow-[0_0_8px_rgba(184,184,184,0.2)] hover:-translate-y-0.5"
+      style={{
+        backgroundColor: 'var(--terminal-bg-light)',
+        color: 'var(--terminal-text)',
+        border: '1px solid var(--terminal-border)'
+      }}
+    >
       {text}
     </span>
   );
@@ -36,10 +43,16 @@ export default function SkillsPage() {
               <AnimatedSection key={item.category} delay={0.2 + index * 0.1} direction="up">
                 <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-base font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300">
+                    <h4 
+                      className="text-base font-bold group-hover:transition-all duration-300"
+                      style={{ color: 'var(--terminal-text-bright)' }}
+                    >
                       {item.category}
                     </h4>
-                    <span className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">
+                    <span 
+                      className="text-xs group-hover:transition-colors duration-300"
+                      style={{ color: 'var(--terminal-text-dim)' }}
+                    >
                       {item.skills.length} items
                     </span>
                   </div>

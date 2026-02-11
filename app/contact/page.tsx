@@ -24,11 +24,15 @@ function PrimaryButton({
       aria-label={ariaLabel}
       className={[
         "group relative inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono overflow-hidden",
-        "bg-[#b8b8b8] border border-[#b8b8b8]",
-        "text-[#1a1d23] shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
-        "transition-all duration-300 hover:bg-[#f0f0f0] hover:shadow-[0_6px_20px_rgba(184,184,184,0.5)]",
+        "shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
+        "transition-all duration-300 hover:shadow-[0_6px_20px_rgba(184,184,184,0.5)]",
         "hover:-translate-y-0.5",
       ].join(" ")}
+      style={{
+        backgroundColor: 'var(--terminal-accent)',
+        border: '1px solid var(--terminal-accent)',
+        color: 'var(--terminal-bg)'
+      }}
     >
       <span className="relative z-10">{children}</span>
       <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -51,11 +55,15 @@ function SecondaryButton({
       aria-label={ariaLabel}
       className={[
         "group inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono",
-        "border border-[#3a3f4b] bg-transparent text-[#b8b8b8]",
+        "bg-transparent",
         "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
-        "transition-all duration-300 hover:bg-[#24272f] hover:border-[#b8b8b8] hover:shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
+        "transition-all duration-300 hover:shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
         "hover:-translate-y-0.5",
       ].join(" ")}
+      style={{
+        border: '1px solid var(--terminal-border)',
+        color: 'var(--terminal-text)'
+      }}
     >
       {children}
       <span className="opacity-70 group-hover:translate-x-1 group-hover:opacity-100 transition-all duration-300">↗</span>
@@ -80,40 +88,73 @@ export default function ContactPage() {
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5">
             <AnimatedSection delay={0.3} direction="up">
               <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
-                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">Email</div>
+                <div 
+                  className="text-xs group-hover:transition-colors duration-300"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  Email
+                </div>
                 <a
                   href={`mailto:${contactLinks.email}`}
-                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                  className="mt-3 block text-sm font-bold group-hover:transition-all duration-300"
+                  style={{ color: 'var(--terminal-text-bright)' }}
                 >
                   {contactLinks.email}
                 </a>
-                <p className="mt-3 text-xs text-[#858585]">Best for quick coordination.</p>
+                <p 
+                  className="mt-3 text-xs"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  Best for quick coordination.
+                </p>
               </GlassCard>
             </AnimatedSection>
 
             <AnimatedSection delay={0.4} direction="up">
               <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
-                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">LinkedIn</div>
+                <div 
+                  className="text-xs group-hover:transition-colors duration-300"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  LinkedIn
+                </div>
                 <a
                   href={contactLinks.linkedin}
-                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                  className="mt-3 block text-sm font-bold group-hover:transition-all duration-300"
+                  style={{ color: 'var(--terminal-text-bright)' }}
                 >
                   alexou8
                 </a>
-                <p className="mt-3 text-xs text-[#858585]">Professional updates and messaging.</p>
+                <p 
+                  className="mt-3 text-xs"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  Professional updates and messaging.
+                </p>
               </GlassCard>
             </AnimatedSection>
 
             <AnimatedSection delay={0.5} direction="up">
               <GlassCard className="p-7 group transition-transform duration-300 hover:-translate-y-1">
-                <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300">GitHub</div>
+                <div 
+                  className="text-xs group-hover:transition-colors duration-300"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  GitHub
+                </div>
                 <a
                   href={contactLinks.github}
-                  className="mt-3 block text-sm font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300"
+                  className="mt-3 block text-sm font-bold group-hover:transition-all duration-300"
+                  style={{ color: 'var(--terminal-text-bright)' }}
                 >
                   github.com/alexou8
                 </a>
-                <p className="mt-3 text-xs text-[#858585]">Projects, code, and experiments.</p>
+                <p 
+                  className="mt-3 text-xs"
+                  style={{ color: 'var(--terminal-text-dim)' }}
+                >
+                  Projects, code, and experiments.
+                </p>
               </GlassCard>
             </AnimatedSection>
           </div>
@@ -133,7 +174,10 @@ export default function ContactPage() {
           </AnimatedSection>
 
           <AnimatedSection delay={0.7} direction="up">
-            <p className="mt-10 text-xs text-[#858585] font-mono">
+            <p 
+              className="mt-10 text-xs font-mono"
+              style={{ color: 'var(--terminal-text-dim)' }}
+            >
               © {new Date().getFullYear()} {aboutMe.name}. Built with Next.js and Tailwind.
             </p>
           </AnimatedSection>

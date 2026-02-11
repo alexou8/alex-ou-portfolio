@@ -26,23 +26,49 @@ export default function WorkPage() {
                 <GlassCard className="p-7 group terminal-border transition-transform duration-300 hover:-translate-y-1">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-lg sm:text-xl font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300 font-mono">
+                      <h3 
+                        className="text-lg sm:text-xl font-bold group-hover:transition-all duration-300 font-mono"
+                        style={{ color: 'var(--terminal-text-bright)' }}
+                      >
                         {x.role}
                       </h3>
-                      <p className="mt-2 text-sm text-[#b8b8b8] font-mono">{x.company}</p>
-                      <p className="mt-1.5 text-xs text-[#858585] font-mono">
+                      <p 
+                        className="mt-2 text-sm font-mono"
+                        style={{ color: 'var(--terminal-text)' }}
+                      >
+                        {x.company}
+                      </p>
+                      <p 
+                        className="mt-1.5 text-xs font-mono"
+                        style={{ color: 'var(--terminal-text-dim)' }}
+                      >
                         {x.time} • {x.location}
                       </p>
                     </div>
-                    <span className="rounded bg-[#3a3f4b] border border-[#b8b8b8] px-3.5 py-1.5 text-xs font-bold text-[#b8b8b8] font-mono">
+                    <span 
+                      className="rounded px-3.5 py-1.5 text-xs font-bold font-mono"
+                      style={{
+                        backgroundColor: 'var(--terminal-border)',
+                        border: '1px solid var(--terminal-accent)',
+                        color: 'var(--terminal-text)'
+                      }}
+                    >
                       Internship
                     </span>
                   </div>
 
-                  <ul className="mt-6 space-y-3 text-sm text-[#b8b8b8] font-mono">
+                  <ul 
+                    className="mt-6 space-y-3 text-sm font-mono"
+                    style={{ color: 'var(--terminal-text)' }}
+                  >
                     {x.bullets.map((b) => (
                       <li key={b} className="flex gap-3">
-                        <span className="mt-[7px] text-[#b8b8b8]">›</span>
+                        <span 
+                          className="mt-[7px]"
+                          style={{ color: 'var(--terminal-text)' }}
+                        >
+                          ›
+                        </span>
                         <span>{b}</span>
                       </li>
                     ))}

@@ -10,11 +10,14 @@ export function GlassCard({
   return (
     <div
       className={[
-        "rounded border border-[#3a3f4b] bg-[#24272f]",
-        "shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
-        "transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_15px_rgba(184,184,184,0.2)]",
+        "rounded shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
+        "transition-all duration-300",
         className,
       ].join(" ")}
+      style={{
+        border: '1px solid var(--terminal-border)',
+        backgroundColor: 'var(--terminal-bg-light)'
+      }}
     >
       {children}
     </div>
