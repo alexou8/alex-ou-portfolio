@@ -29,8 +29,12 @@ export function PageLayout({ children, showLoading = false }: PageLayoutProps) {
       {isLoading && <LoadingScreen onComplete={handleLoadingComplete} />}
       
       <main 
-        className="min-h-screen bg-[#1a1d23] text-[#b8b8b8] font-mono transition-opacity duration-700"
-        style={{ opacity: showContent ? 1 : 0 }}
+        className="min-h-screen font-mono transition-opacity duration-700"
+        style={{ 
+          opacity: showContent ? 1 : 0,
+          backgroundColor: 'var(--terminal-bg)',
+          color: 'var(--terminal-text)'
+        }}
       >
         {/* Scroll Progress Indicator */}
         <ScrollProgress />

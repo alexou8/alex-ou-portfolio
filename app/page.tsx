@@ -10,8 +10,15 @@ import { aboutMe, contactLinks } from "./lib/data";
 ========================= */
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-2 rounded border border-[#3a3f4b] bg-[#24272f] px-4 py-1.5 text-xs text-[#b8b8b8] font-mono transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_10px_rgba(184,184,184,0.3)]">
-      <span className="text-[#b8b8b8]">›</span>
+    <span 
+      className="inline-flex items-center gap-2 rounded px-4 py-1.5 text-xs font-mono transition-all duration-300"
+      style={{
+        border: '1px solid var(--terminal-border)',
+        backgroundColor: 'var(--terminal-bg-light)',
+        color: 'var(--terminal-text)'
+      }}
+    >
+      <span style={{ color: 'var(--terminal-text)' }}>›</span>
       {children}
     </span>
   );
@@ -27,11 +34,14 @@ function GlassCard({
   return (
     <div
       className={[
-        "rounded border border-[#3a3f4b] bg-[#24272f]",
-        "shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
-        "transition-all duration-300 hover:border-[#b8b8b8] hover:shadow-[0_0_15px_rgba(184,184,184,0.2)]",
+        "rounded shadow-[0_2px_8px_rgba(0,0,0,0.3)]",
+        "transition-all duration-300",
         className,
       ].join(" ")}
+      style={{
+        border: '1px solid var(--terminal-border)',
+        backgroundColor: 'var(--terminal-bg-light)'
+      }}
     >
       {children}
     </div>
@@ -53,11 +63,15 @@ function PrimaryButton({
       aria-label={ariaLabel}
       className={[
         "group relative inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono overflow-hidden",
-        "bg-[#b8b8b8] border border-[#b8b8b8]",
-        "text-[#1a1d23] shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
-        "transition-all duration-300 hover:bg-[#f0f0f0] hover:shadow-[0_6px_20px_rgba(184,184,184,0.5)]",
+        "shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
+        "transition-all duration-300 hover:shadow-[0_6px_20px_rgba(184,184,184,0.5)]",
         "hover:-translate-y-0.5",
       ].join(" ")}
+      style={{
+        backgroundColor: 'var(--terminal-accent)',
+        border: '1px solid var(--terminal-accent)',
+        color: 'var(--terminal-bg)'
+      }}
     >
       <span className="relative z-10">{children}</span>
       <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -80,11 +94,15 @@ function SecondaryButton({
       aria-label={ariaLabel}
       className={[
         "group inline-flex items-center justify-center gap-2 rounded px-6 py-3 text-sm font-bold font-mono",
-        "border border-[#3a3f4b] bg-transparent text-[#b8b8b8]",
+        "bg-transparent",
         "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
-        "transition-all duration-300 hover:bg-[#24272f] hover:border-[#b8b8b8] hover:shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
+        "transition-all duration-300 hover:shadow-[0_4px_12px_rgba(184,184,184,0.3)]",
         "hover:-translate-y-0.5",
       ].join(" ")}
+      style={{
+        border: '1px solid var(--terminal-border)',
+        color: 'var(--terminal-text)'
+      }}
     >
       {children}
       <span className="opacity-70 group-hover:translate-x-1 group-hover:opacity-100 transition-all duration-300">↗</span>
@@ -95,8 +113,18 @@ function SecondaryButton({
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <GlassCard className="p-5 group terminal-border transition-transform duration-300 hover:-translate-y-1">
-      <div className="text-xs text-[#858585] group-hover:text-[#b8b8b8] transition-colors duration-300 font-mono">{label}</div>
-      <div className="mt-2 text-lg font-bold text-[#f0f0f0] group-hover:text-[#b8b8b8] transition-all duration-300 font-mono">{value}</div>
+      <div 
+        className="text-xs group-hover:transition-colors duration-300 font-mono"
+        style={{ color: 'var(--terminal-text-dim)' }}
+      >
+        {label}
+      </div>
+      <div 
+        className="mt-2 text-lg font-bold group-hover:transition-all duration-300 font-mono"
+        style={{ color: 'var(--terminal-text-bright)' }}
+      >
+        {value}
+      </div>
     </GlassCard>
   );
 }
@@ -152,10 +180,11 @@ export default function Home() {
             <div className="mt-8">
               {/* Command prompt */}
               <div
-                className="text-[#858585] text-sm font-mono mb-2 transition-all duration-500"
+                className="text-sm font-mono mb-2 transition-all duration-500"
                 style={{
                   opacity: showTypewriter ? 1 : 0,
                   transform: showTypewriter ? "translateY(0)" : "translateY(-10px)",
+                  color: 'var(--terminal-text-dim)'
                 }}
               >
                 $ whoami
@@ -163,10 +192,11 @@ export default function Home() {
               
               {/* Typewriter rotating headline */}
               <div
-                className="text-2xl sm:text-3xl font-bold tracking-tight text-[#f0f0f0] mb-4 transition-all duration-500"
+                className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 transition-all duration-500"
                 style={{
                   opacity: showTypewriter ? 1 : 0,
                   transform: showTypewriter ? "translateY(0)" : "translateY(-10px)",
+                  color: 'var(--terminal-text-bright)'
                 }}
               >
                 <TypewriterHeadline headlines={aboutMe.rotatingHeadlines} />
@@ -174,10 +204,11 @@ export default function Home() {
               
               {/* Main title */}
               <h1
-                className="text-3xl sm:text-5xl font-bold tracking-tight text-[#b8b8b8] leading-tight font-mono transition-all duration-500"
+                className="text-3xl sm:text-5xl font-bold tracking-tight leading-tight font-mono transition-all duration-500"
                 style={{
                   opacity: showTitle ? 1 : 0,
                   transform: showTitle ? "translateY(0)" : "translateY(-10px)",
+                  color: 'var(--terminal-text)'
                 }}
               >
                 {aboutMe.headline}
@@ -186,10 +217,11 @@ export default function Home() {
 
             {/* Description */}
             <p
-              className="mt-6 text-base sm:text-lg text-[#b8b8b8] leading-relaxed max-w-3xl font-mono transition-all duration-500"
+              className="mt-6 text-base sm:text-lg leading-relaxed max-w-3xl font-mono transition-all duration-500"
               style={{
                 opacity: showDescription ? 1 : 0,
                 transform: showDescription ? "translateY(0)" : "translateY(-10px)",
+                color: 'var(--terminal-text)'
               }}
             >
               {aboutMe.summary}
@@ -229,31 +261,6 @@ export default function Home() {
           </div>
         </GlassCard>
       </section>
-
-      <style>{`
-        .terminal-border {
-          position: relative;
-          background: #24272f;
-          border: 1px solid #3a3f4b;
-        }
-        
-        .terminal-border:hover {
-          border-color: #b8b8b8;
-          animation: terminalGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes terminalGlow {
-          0%, 100% { box-shadow: 0 0 5px rgba(184, 184, 184, 0.1); }
-          50% { box-shadow: 0 0 15px rgba(184, 184, 184, 0.2); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          * {
-            animation: none !important;
-            transition: none !important;
-          }
-        }
-      `}</style>
     </PageLayout>
   );
 }
