@@ -274,13 +274,30 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 
 
 
-/* Theme transition support */
-* {
+/* Theme transition support for specific elements */
+body,
+main,
+header,
+nav,
+button,
+a,
+div[class*="border"],
+div[class*="bg-"],
+span[class*="text-"],
+p[class*="text-"] {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  body,
+  main,
+  header,
+  nav,
+  button,
+  a,
+  div,
+  span,
+  p {
     transition: none !important;
   }
 }

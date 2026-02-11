@@ -9,11 +9,12 @@ export function ThemeToggle() {
   return (
     <motion.button
       onClick={toggleTheme}
-      className="relative flex items-center justify-center w-10 h-10 rounded overflow-hidden transition-all duration-300"
+      className="relative flex items-center justify-center w-10 h-10 rounded overflow-hidden transition-all duration-300 focus:outline focus:outline-2 focus:outline-offset-2"
       style={{
         border: '1px solid var(--terminal-border)',
         backgroundColor: 'var(--terminal-bg-light)',
-        color: 'var(--terminal-text)'
+        color: 'var(--terminal-text)',
+        outlineColor: 'var(--terminal-accent)'
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

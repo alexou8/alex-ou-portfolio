@@ -36,6 +36,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!mounted) return;
     
+    // Remove both theme classes to ensure clean state before applying new theme
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
     localStorage.setItem("theme", theme);
